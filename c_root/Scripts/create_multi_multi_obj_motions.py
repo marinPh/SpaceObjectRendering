@@ -3,6 +3,7 @@ Author:     Tim Vaughan-Whitehead
 Date:       June 9, 2023
 Description: Script to create a set of motions for multiple objects tumbling in space.
 """
+import argparse
 
 import numpy as np
 from pyquaternion import Quaternion
@@ -15,12 +16,18 @@ from Utils.save_info_to_files_utils import save_camera_info_to_file
 
 #############################################
 # Motion info
+parser = argparse.ArgumentParser(description='Your script description')
+parser.add_argument('object_name', help='Name of the object')
+parser.add_argument('pose_id', help='pose ID')
+args = parser.parse_args()
+main_obj_name = args.object_name
+pose_id = args.pose_id
 
 # Nb of motions to create
 nb_motions: int = 15
 
 # Starting motion id
-start_tumble_id: str = "001"
+start_tumble_id: str = pose_id
 
 # Minimum number of frames per motion
 min_num_frames: int = 80
@@ -29,7 +36,7 @@ min_num_frames: int = 80
 # Object info
 
 # Ids of objects for motion generation
-object_ids: set[str] = {"02", "03", "04"}
+object_ids: set[str] = {str(main_obj_name).partition('_')[0]}
 
 #############################################
 # Motion parameters

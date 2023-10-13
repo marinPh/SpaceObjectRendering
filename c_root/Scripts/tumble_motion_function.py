@@ -10,8 +10,12 @@ import math
 from tqdm import tqdm
 import re
 import os
+parser = argparse.ArgumentParser(description='Your script description')
+parser.add_argument('object_name', help='Name of the object')
+args = parser.parse_args()
 
-object_name = "02_Hubble_Space_Telescope"
+
+object_name = args.object_name
 proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 input_output_directory : str = os.path.join(proj_dir,"input")
 output_dir : str = os.path.join(proj_dir,"output")

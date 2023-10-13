@@ -5,6 +5,7 @@ Description: Renders multiple motions from the dataset. The script renders the
                 first nb_im images from each motion. If nb_im is set to None, the
                 script renders all images from each motion.
 """
+import argparse
 
 import bpy
 import sys
@@ -24,15 +25,25 @@ import Utils.dataset_constants as dc
 proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 output_directory : str = os.path.join(proj_dir,"output")
 
+
 # Input directory
 input_directory: str = os.path.join(proj_dir,"input")
 # Output directory
-output_directory: str = input_directory
+
+
+parser = argparse.ArgumentParser(description='Your script description')
+parser.add_argument('object_name', help='Name of the object')
+parser.add_argument('pose_id', help='pose ID')
+
+args = parser.parse_args()
+
+main_obj_name = args.object_name
+pose_id = args.pose_id
 
 # Id of the objects to render
-group_id: str = "02"
+group_id: str = main_obj_name
 # First motion id
-first_motion_id: str = "000"
+first_motion_id: str = pose_id
 # Number of motions to render
 nb_motions: int = 1
 # List of motions to render

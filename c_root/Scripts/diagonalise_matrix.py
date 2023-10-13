@@ -16,6 +16,12 @@ import re
 
 # Input and output directory for the inertia matrix text file
 proj_dir : str = os.path.dirname(os.path.dirname(__file__))
+
+parser = argparse.ArgumentParser(description='Your script description')
+parser.add_argument('object_name', help='Name of the object')
+args = parser.parse_args()
+
+main_obj_name = args.object_name
 input_output_directory : str = os.path.join(proj_dir,"input")
 output_dir : str = os.path.join(proj_dir,"output")
 # Input file name (should correspond to the output file name of the inertia matrix calculator)
@@ -86,7 +92,7 @@ def write_inaccuracy_and_rotation_to_file(file, method_name, inaccuracy, rotatio
 input_file_path = os.path.join(input_output_directory, input_file_name)
 with open(input_file_path, 'r') as f:
     file_content = f.read()
-object_name = extract_object_name(file_content)
+object_name = main_obj_name
 inertia_matrix = read_inertia_matrix_from_file(input_file_path)
 
 # Calculate the diagonal matrices

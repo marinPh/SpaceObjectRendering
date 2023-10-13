@@ -24,8 +24,15 @@ output_dir : str = os.path.join(proj_dir,"output")
 # Number of poses to generate
 num_poses = dc.val_num_poses
 
+parser = argparse.ArgumentParser(description='Your script description')
+parser.add_argument('object_name', help='Name of the object')
+parser.add_argument('pose_id', help='pose ID')
+args = parser.parse_args()
+main_obj_name = args.object_name
+pose_id = args.pose_id
+
 # Ids of objects for pose generation
-object_ids: set[str] = {"01", "02"}
+object_ids: set[str] = {str(main_obj_name).partition('_')[0]}
 '''
 # Object names and their corresponding object ID
 "01": "James Webb Space Telescope",

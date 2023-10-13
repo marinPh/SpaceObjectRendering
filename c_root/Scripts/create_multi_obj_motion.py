@@ -3,6 +3,7 @@ Author:     Tim Vaughan-Whitehead
 Date:       June 9, 2023
 Description: Generates a motion for multiple objects tumbling in space.
 """
+import argparse
 
 import numpy as np
 from pyquaternion import Quaternion
@@ -15,16 +16,22 @@ import Utils.dataset_constants as dc
 from Utils.save_info_to_files_utils import save_camera_info_to_file
 
 #############################################
+parser = argparse.ArgumentParser(description='Your script description')
+parser.add_argument('object_name', help='Name of the object')
+parser.add_argument('pose_id', help='pose ID')
+args = parser.parse_args()
+main_obj_name = args.object_name
+pose_id = args.pose_id
 # Motion info
 
 # Tumble id
-tumble_id: str = "000"
-
+tumble_id: str =pose_id
 #############################################
 # Object info
 
 # Ids of objects for motion generation
-object_ids: set[str] = {"01", "02"}
+object_ids: set[str] = {str(main_obj_name).partition('_')[0]}
+
 
 #############################################
 # Initial conditions

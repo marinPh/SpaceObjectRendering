@@ -3,6 +3,7 @@ Author:     Tim Vaughan-Whitehead
 Date:       June 9, 2023
 Description: This script calculates the moment of inertia tensor of an object in Blender.
 """
+import argparse
 
 import bpy
 import numpy as np
@@ -18,7 +19,11 @@ from mathutils.bvhtree import BVHTree
 # User-defined inputs
 
 # Name of the main object
-main_obj_name = "02_Hubble_Space_Telescope"
+parser = argparse.ArgumentParser(description='Your script description')
+parser.add_argument('object_name', help='Name of the object')
+args = parser.parse_args()
+
+main_obj_name = args.object_name
 # Total mass of the entire system (kg)
 total_mass = 12200
 # Number of random points to sample
@@ -29,7 +34,7 @@ input_dir : str = os.path.join(proj_dir,"input")
 output_dir : str = os.path.join(proj_dir,"output")
 # Name of the output text file for the moment of inertia tensor
 # This file will be used as input for the diagonalization script
-output_file_name = '_inertia_matrix.txt'
+output_file_name = main_obj_name+'_inertia_matrix.txt'
 # Name of the output text file for other information (e.g. object name, total mass, bounding box, etc.)
 # The name of this file will be prepended with the object name
 output_info_file_name = 'info.txt'

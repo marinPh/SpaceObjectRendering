@@ -5,6 +5,8 @@ Description: Applies the motion from the dataset to the objects in the scene.
 """
 from __future__ import annotations
 
+import argparse
+
 import bpy
 import numpy as np
 from mathutils import Vector
@@ -25,7 +27,13 @@ proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 input_directory : str = os.path.abspath("input")
 output_directory : str = os.path.abspath("output")
 # Motion ID
-motion_id = "02000"
+parser = argparse.ArgumentParser(description='Your script description')
+parser.add_argument('object_name', help='Name of the object')
+parser.add_argument('pose_id',help='pose id to get motion')
+args = parser.parse_args()
+#TODO check if this does the right motion ID
+motion_id = str(args.object_name).index(0,2) + str(args.pose_id)
+
 # Path for the file that contains the position and orientation data
 motions_path = os.path.join(input_directory, motion_id, dc.scene_gt_file_name)
 

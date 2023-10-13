@@ -3,7 +3,7 @@ Author:     Tim Vaughan-Whitehead
 Date:       June 9, 2023
 Description: Generates random poses for a single object.
 """
-
+import argparse
 
 import numpy as np
 import os
@@ -23,13 +23,17 @@ input_dir : str = os.path.join(proj_dir,"input")
 output_dir : str = os.path.join(proj_dir,"output")
 
 
+parser = argparse.ArgumentParser(description='Your script description')
+parser.add_argument('object_name', help='Name of the object')
+args = parser.parse_args()
+main_obj_name = args.object_name
 
 
 # Number of poses to generate
 num_poses : int = dc.val_num_poses
 
 # ID of the object to be rendered
-object_id : str = "04"
+object_id : str = str(main_obj_name).partition('_')[0]
 
 # Whether the sun orientation is randomly generated or not
 sun_rnd_generated : bool = True
