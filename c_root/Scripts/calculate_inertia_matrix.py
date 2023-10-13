@@ -30,8 +30,8 @@ total_mass = 12200
 num_samples = 100000
 # Output directory for the inertia matrix text file
 proj_dir : str = os.path.dirname(os.path.dirname(__file__))
-input_dir : str = os.path.join(proj_dir,"input")
-output_dir : str = os.path.join(proj_dir,"output")
+input_directory : str = os.path.join(proj_dir,"input")
+output_directory : str = os.path.join(proj_dir,"output")
 # Name of the output text file for the moment of inertia tensor
 # This file will be used as input for the diagonalization script
 output_file_name = main_obj_name+'_inertia_matrix.txt'

@@ -3,6 +3,7 @@ Author:     Andrew Lawrence Price, Tim Vaughan-Whitehead
 Date:       June 9, 2023
 Description: Generates motion for an object.
 """
+import argparse
 
 import numpy as np
 from pyquaternion import Quaternion

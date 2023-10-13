@@ -3,6 +3,8 @@ Author:     Tim Vaughan-Whitehead
 Date:       June 9, 2023
 Description: Generates a motion for multiple objects tumbling in space.
 """
+from __future__ import annotations
+
 import argparse
 
 import numpy as np
@@ -10,7 +12,7 @@ from pyquaternion import Quaternion
 import math
 import os
 
-from create_multi_obj_rnd_poses import save_vals_to_file, get_group_id, bbox_isolated, adjust_bounding_box
+from pose_to_motion import save_vals_to_file, get_group_id, bbox_isolated, adjust_bounding_box
 from tumble_motion_function import create_object_motion
 import Utils.dataset_constants as dc
 from Utils.save_info_to_files_utils import save_camera_info_to_file
@@ -79,8 +81,8 @@ min_distance: int = 5 # dc.min_distance
 
 # Name of the output directory
 proj_dir : str = os.path.dirname(os.path.dirname(__file__))
-input_dir : str = os.path.join(proj_dir,"input")
-output_dir : str = os.path.join(proj_dir,"output")
+input_directory : str = os.path.join(proj_dir,"input")
+output_directory : str = os.path.join(proj_dir,"output")
 
 ################################################
 

@@ -1,15 +1,18 @@
 """
 Author:     Tim Vaughan-Whitehead
-Date:       June 9, 2023
+Date:       June 9, 2023,
 Description: Generates random poses for multiple objects.
 """
+from __future__ import annotations
+
+import argparse
 
 import numpy as np
 import os
 from scipy.spatial.transform import Rotation as R
 from tqdm import tqdm
 
-from create_random_poses import generate_non_uniform_poses, save_rnd_gen_gt_info_to_file, save_sun_orientations_to_file, generate_random_sun_orientations
+from create_poses import generate_non_uniform_poses, save_rnd_gen_gt_info_to_file, save_sun_orientations_to_file, generate_random_sun_orientations
 from Utils.save_info_to_files_utils import save_camera_info_to_file
 import Utils.dataset_constants as dc
 
@@ -18,8 +21,8 @@ import Utils.dataset_constants as dc
 
 # Output directory
 proj_dir : str = os.path.dirname(os.path.dirname(__file__))
-input_dir : str = os.path.join(proj_dir,"input")
-output_dir : str = os.path.join(proj_dir,"output")
+input_directory : str = os.path.join(proj_dir,"input")
+out_directory : str = os.path.join(proj_dir,"output")
 
 # Number of poses to generate
 num_poses = dc.val_num_poses

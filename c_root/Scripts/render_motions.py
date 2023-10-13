@@ -15,9 +15,9 @@ import importlib
 sys.path.append(os.path.abspath("."))
 sys.path.append(os.path.abspath("Utils"))
 
-import apply_motion_for_render_function
+import render_setup
   # Reload the module to get the latest changes
-from apply_motion_for_render_function import apply_blender_animation
+from render_setup import apply_blender_animation
 import Utils.dataset_constants as dc
 
 ################################################
