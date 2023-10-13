@@ -26,13 +26,17 @@ proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 # Output directory
 input_directory : str = os.path.abspath("input")
 output_directory : str = os.path.abspath("output")
+
 # Motion ID
 parser = argparse.ArgumentParser(description='Your script description')
 parser.add_argument('object_name', help='Name of the object')
 parser.add_argument('pose_id',help='pose id to get motion')
 args = parser.parse_args()
+main_obj_name = args.object_name
+blend_file_path = os.path.join(proj_dir,"objects","blend",f"{main_obj_name}.blend")
+
 #TODO check if this does the right motion ID
-motion_id = str(args.object_name).index(0,2) + str(args.pose_id)
+motion_id = str(main_obj_name).index(0,2) + str(args.pose_id)
 
 # Path for the file that contains the position and orientation data
 motions_path = os.path.join(input_directory, motion_id, dc.scene_gt_file_name)
@@ -249,6 +253,7 @@ def init_sun(sun_name: str, sun_pos: Vector, sun_rot: np.ndarray, light_energy: 
     
 # main function
 if __name__ == '__main__':
+    bpy.ops.wm.open_mainfile(filepath=blend_file_path)
     apply_blender_animation(motions_path=motions_path, 
                             sun_path=sun_path,
                             info_path=info_path,

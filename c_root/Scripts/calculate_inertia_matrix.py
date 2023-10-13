@@ -32,6 +32,8 @@ num_samples = 100000
 proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 input_directory : str = os.path.join(proj_dir,"input")
 output_directory : str = os.path.join(proj_dir,"output")
+blend_file_path = os.path.join(proj_dir,"objects","blend",f"{main_obj_name}.blend")
+
 # Name of the output text file for the moment of inertia tensor
 # This file will be used as input for the diagonalization script
 output_file_name = main_obj_name+'_inertia_matrix.txt'
@@ -43,6 +45,7 @@ output_info_file_name = 'info.txt'
 
 # Function that applies all transforms to an object and its children
 def apply_all_transforms(obj):
+    bpy.ops.wm.open_mainfile(filepath=blend_file_path)
     bpy.context.view_layer.objects.active = obj 
     obj.select_set(True)
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True) 
