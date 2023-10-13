@@ -24,12 +24,12 @@ total_mass = 12200
 # Number of random points to sample
 num_samples = 100000
 # Output directory for the inertia matrix text file
-proj_dir : str = "C:\\Users\\marin\\Documents\\BA5\\ProjB\\hubble"
+proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 input_dir : str = os.path.join(proj_dir,"input")
 output_dir : str = os.path.join(proj_dir,"output")
 # Name of the output text file for the moment of inertia tensor
 # This file will be used as input for the diagonalization script
-output_file_name = 'inertia_matrix.txt'
+output_file_name = '_inertia_matrix.txt'
 # Name of the output text file for other information (e.g. object name, total mass, bounding box, etc.)
 # The name of this file will be prepended with the object name
 output_info_file_name = 'info.txt'

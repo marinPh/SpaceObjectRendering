@@ -15,7 +15,7 @@ import re
 # User-defined inputs
 
 # Input and output directory for the inertia matrix text file
-proj_dir : str = "C:\\Users\\marin\\Documents\\BA5\\ProjB\\hubble"
+proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 input_output_directory : str = os.path.join(proj_dir,"input")
 output_dir : str = os.path.join(proj_dir,"output")
 # Input file name (should correspond to the output file name of the inertia matrix calculator)

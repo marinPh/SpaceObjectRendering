@@ -21,7 +21,7 @@ import Utils.dataset_constants as dc
 
 ################################################
 # User-defined inputs
-proj_dir : str = "C:\\Users\\marin\\Documents\\BA5\\ProjB\\hubble" 
+proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 output_directory : str = os.path.join(proj_dir,"output")
 
 # Input directory

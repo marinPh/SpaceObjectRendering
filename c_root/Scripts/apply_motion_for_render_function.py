@@ -20,7 +20,7 @@ import Utils.dataset_constants as dc
 # Path for the file that contains the position data
 # File should be formatted as follows:
 # frame_nb, object_id1, q10, q1x, q1y, q1z, pos1x, pos1y, pos1z, object_id2, q20, q2x, q2y, q2z, pos2x, pos2y, pos2z, ...
-proj_dir : str = "C:\\Users\\marin\\Documents\\BA5\\ProjB\\hubble"
+proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 # Output directory
 input_directory : str = os.path.abspath("input")
 output_directory : str = os.path.abspath("output")

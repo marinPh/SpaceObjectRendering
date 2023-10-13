@@ -9,7 +9,8 @@ import numpy as np
 import os
 from pyquaternion import Quaternion
 
-import sys
+import sysprj
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from Utils.save_info_to_files_utils import save_camera_info_to_file
@@ -17,7 +18,7 @@ import Utils.dataset_constants as dc
 
 ################################################
 # User-defined inputs
-proj_dir : str = "C:\\Users\\marin\\Documents\\BA5\\ProjB\\hubble"
+proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 input_dir : str = os.path.join(proj_dir,"input")
 output_dir : str = os.path.join(proj_dir,"output")
 

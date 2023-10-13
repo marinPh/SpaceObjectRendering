@@ -72,7 +72,7 @@ min_distance: int = 15
 # Output properties
 
 # Name of the output directory
-proj_dir : str = "C:\\Users\\marin\\Documents\\BA5\\ProjB\\hubble"
+proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 input_dir : str = os.path.join(proj_dir,"input")
 output_dir : str = os.path.join(proj_dir,"output")
 
