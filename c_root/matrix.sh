@@ -5,6 +5,17 @@
 
 SCRIPTS_DIR="./scripts"
 
+# Determine the Python executable using Python itself
+python_exe= blender
+
+# List of Python modules/packages to be installed
+modules=("scipy" "numpy")  # Add more as needed
+
+# Install the modules
+for module in "${modules[@]}"; do
+    $python_exe -m pip install "$module"
+done
+
 # Define default values and variables
 
 

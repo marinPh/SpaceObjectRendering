@@ -5,6 +5,7 @@ Description: This script reads in the inertia matrix from a text file and diagon
                 1) Zeroing out all non-diagonal components
                 2) Calculating the eigenvectors and eigenvalues
 """
+import argparse
 
 import numpy as np
 import os
