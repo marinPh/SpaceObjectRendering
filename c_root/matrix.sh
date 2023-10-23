@@ -4,17 +4,19 @@
 
 
 SCRIPTS_DIR="./scripts"
+OBJECT_DIR="./objects/blend"
 
-# Determine the Python executable using Python itself
-python_exe= blender
+# Use Blender's --background option to query the Python executable
+# shellcheck disable=SC2091
+
 
 # List of Python modules/packages to be installed
 modules=("scipy" "numpy")  # Add more as needed
 
+
 # Install the modules
-for module in "${modules[@]}"; do
-    $python_exe -m pip install "$module"
-done
+
+  # Use Blender's bundled Python to install the module
 
 # Define default values and variables
 
@@ -25,12 +27,14 @@ if [ $# -ge 1 ]; then
 fi
 
 
-# ... Rest of the script ...
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/Utils/import_modules.py"
+
+
 
 # Execute your Python scripts with the full path to the Python executable
-blender -b -P "$SCRIPTS_DIR/calculate_inertia_matrix.py" "$OBJECT_NAME"
-blender -b -P "$SCRIPTS_DIR/diagonalise_matrix.py" "$OBJECT_NAME" # Reads pretty_matrix.txt
+echo starting scripts
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/calculate_inertia_matrix.py" -- "$OBJECT_NAME"
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/diagonalise_matrix.py"  -- "$OBJECT_NAME" # Reads pretty_matrix.txt
 
-# Render the scenes with Blender
 
-# ... Rest of the script ...
+

@@ -3,8 +3,10 @@ Author:     Tim Vaughan-Whitehead
 Date:       June 9, 2023
 Description: This script calculates the moment of inertia tensor of an object in Blender.
 """
-import argparse
 
+print("looking for modules")
+import argparse
+import sys
 import bpy
 import numpy as np
 import os
@@ -19,16 +21,23 @@ from mathutils.bvhtree import BVHTree
 # User-defined inputs
 
 # Name of the main object
-parser = argparse.ArgumentParser(description='Your script description')
-parser.add_argument('object_name', help='Name of the object')
-args = parser.parse_args()
+if len(sys.argv) < 2:
+    print("Usage: python calculate_inertia_matrix.py <arg1>")
+    sys.exit(1)
 
-main_obj_name = args.object_name
+# Access the argument passed in the command line
+arg1 = sys.argv[1]
+print("Argument 1:", arg1)
+
+main_obj_name = arg1
 # Total mass of the entire system (kg)
+
+
 total_mass = 12200
 # Number of random points to sample
 num_samples = 100000
 # Output directory for the inertia matrix text file
+log_file_name = "log_inertia.txt"
 proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 input_directory : str = os.path.join(proj_dir,"input")
 output_directory : str = os.path.join(proj_dir,"output")
@@ -44,7 +53,23 @@ output_info_file_name = 'info.txt'
 ################################################
 
 # Function that applies all transforms to an object and its children
+def log_inertia(mess,file_name = log_file_name):
+    with open(os.path.join(output_directory, file_name), "a") as log_file:
+        log_file.write(f"{mess}\n")
+
+
+def init_log_file(output_directory: str, log_file_name: str) -> None:
+    """Initializes the log file with the motion ids to render
+
+    Args:
+        output_directory (str): Output directory
+        motion_ids (list[str]): List of motion ids
+        log_file_name (str): Name of the log file
+    """
+    with open(os.path.join(output_directory, log_file_name), "w") as log_file:
+        log_file.write("\n\ninit file:\n")
 def apply_all_transforms(obj):
+    log_inertia("apply_all_trans")
     bpy.ops.wm.open_mainfile(filepath=blend_file_path)
     bpy.context.view_layer.objects.active = obj 
     obj.select_set(True)
@@ -55,6 +80,7 @@ def apply_all_transforms(obj):
 
 # Function to traverse object hierarchy and find all mesh objects
 def traverse_hierarchy(obj, mesh_objects):
+    log_inertia("traverse")
     if obj.type == 'MESH':
         mesh_objects.append(obj)
     for child in obj.children:
@@ -63,6 +89,7 @@ def traverse_hierarchy(obj, mesh_objects):
 
 # Function to create bmesh objects from mesh objects
 def create_bmesh_objects(mesh_objects):
+    log_inertia("create_bmesh_objects")
     bmesh_objects = []
     for obj in mesh_objects:
         mesh = obj.data
@@ -257,7 +284,11 @@ def create_html_from_inside_points(all_inside_points, main_obj_name, output_dire
 
 
 # Get a reference to the main object
-if main_obj := bpy.data.objects.get(main_obj_name): 
+init_log_file(output_directory,log_file_name)
+print("looking for main object")
+if main_obj := bpy.data.objects.get(main_obj_name):
+    print("main_object found")
+
     # Make sure the object is at the origin, has no rotation and no scale
     main_obj.location = (0, 0, 0)
     main_obj.rotation_mode = 'QUATERNION'
@@ -313,5 +344,6 @@ if main_obj := bpy.data.objects.get(main_obj_name):
     output_file_name_info = f'{main_obj_name}_{output_info_file_name}'
     output_file_path_info = os.path.join(output_directory, output_file_name_info)
     save_info_to_file(output_file_path_info, bbox, size, total_mass, num_samples, global_approx_com)
-
+else:
+    print("hein??")
     print("Done!\n")
