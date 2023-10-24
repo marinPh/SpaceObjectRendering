@@ -28,11 +28,17 @@ input_directory : str = os.path.abspath("input")
 output_directory : str = os.path.abspath("output")
 
 # Motion ID
-parser = argparse.ArgumentParser(description='Your script description')
-parser.add_argument('object_name', help='Name of the object')
-parser.add_argument('pose_id',help='pose id to get motion')
-args = parser.parse_args()
-main_obj_name = args.object_name
+if len(sys.argv) != 3:
+    print("Usage: python script.py arg1 arg2")
+else:
+    arg1= sys.argv[1]
+    arg2 = sys.argv[2]
+    print(f"Argument 1: {arg1}")
+    print(f"Argument 2: {arg2}")
+# Motion info
+main_obj_name = arg1
+pose_id = arg2
+
 blend_file_path = os.path.join(proj_dir,"objects","blend",f"{main_obj_name}.blend")
 
 #TODO check if this does the right motion ID

@@ -23,11 +23,16 @@ input_dir : str = os.path.join(proj_dir,"input")
 output_dir : str = os.path.join(proj_dir,"output")
 
 
-parser = argparse.ArgumentParser(description='Your script description')
-parser.add_argument('object_name', help='Name of the object')
-args = parser.parse_args()
-main_obj_name = args.object_name
-
+if len(sys.argv) != 3:
+    print("Usage: python script.py arg1 arg2")
+else:
+    arg1= sys.argv[1]
+    arg2 = sys.argv[2]
+    print(f"Argument 1: {arg1}")
+    print(f"Argument 2: {arg2}")
+# Motion info
+main_obj_name = arg1
+pose_id = arg2
 
 # Number of poses to generate
 num_poses : int = dc.val_num_poses

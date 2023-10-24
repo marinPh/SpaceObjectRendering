@@ -10,20 +10,26 @@ import argparse
 import numpy as np
 from pyquaternion import Quaternion
 import os
+import sys
 
 from pose_to_motion import save_vals_to_file, get_group_id, bbox_isolated, adjust_bounding_box
+
 from tumble_motion_function import create_object_motion
 import Utils.dataset_constants as dc
 from Utils.save_info_to_files_utils import save_camera_info_to_file
 
 #############################################
 # Motion info
-parser = argparse.ArgumentParser(description='Your script description')
-parser.add_argument('object_name', help='Name of the object')
-parser.add_argument('pose_id', help='pose ID')
-args = parser.parse_args()
-main_obj_name = args.object_name
-pose_id = args.pose_id
+if len(sys.argv) != 3:
+    print("Usage: python script.py arg1 arg2")
+else:
+    arg1= sys.argv[1]
+    arg2 = sys.argv[2]
+    print(f"Argument 1: {arg1}")
+    print(f"Argument 2: {arg2}")
+# Motion info
+main_obj_name = arg1
+pose_id = arg2
 
 # Nb of motions to create
 nb_motions: int = 15

@@ -11,29 +11,33 @@ import numpy as np
 import os
 from scipy.spatial.transform import Rotation
 import re
-
+import sys
 ################################################
 # User-defined inputs
 
 # Input and output directory for the inertia matrix text file
 proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 
-parser = argparse.ArgumentParser(description='Your script description')
-parser.add_argument('object_name', help='Name of the object')
-args = parser.parse_args()
+if len(sys.argv) < 2:
+    print("Usage: python calculate_inertia_matrix.py <arg1>")
+    sys.exit(1)
 
-main_obj_name = args.object_name
-input_output_directory : str = os.path.join(proj_dir,"input")
-output_dir : str = os.path.join(proj_dir,"output")
+# Access the argument passed in the command line
+arg1 = sys.argv[1]
+print("Argument 1:", arg1)
+
+main_obj_name = arg1
+input_output_directory : str = os.path.join(proj_dir,"objects","inertia")
+output_dir : str = os.path.join(proj_dir,"objects","diag")
 # Input file name (should correspond to the output file name of the inertia matrix calculator)
-input_file_name = 'inertia_matrix.txt'
+input_file_name = main_obj_name+'_inertia_matrix.txt'
 # Name of the output text files
 # The object name will be prepended to the output file name
-output_file_name = 'diagonalized_inertia_matrix.txt'
+output_file_name = main_obj_name+'_diagonalized_inertia_matrix.txt'
 
 ################################################
 def write_pretty_file(matrix):
-    with open(output_dir,"w") as file:
+    with open(os.path.join(output_dir,output_file_name),"w") as file:
         formatted_matrix = ",\n".join(["    [{:6.2f}, {:6.2f}, {:6.2f}]".format(*row) for row in matrix])
         file.write("np.array([\n" + formatted_matrix + "\n])")
 def zero_non_diagonal(matrix):
@@ -122,7 +126,7 @@ print("Inaccuracy with diagonalization using eigenvectors: {:6.2f}\n".format(ina
 # Write the results to the output file
 output_file_name_with_object = f"{object_name}_{output_file_name}"
 output_file_path = os.path.join(input_output_directory, output_file_name_with_object)
-with open(output_file_path, 'w') as output_file:
+with open(os.path.join(output_dir,output_file_name), 'w') as output_file:
     output_file.write(f"Original inertia matrix for object '{object_name}':\n")
     output_file.write(print_matrix(inertia_matrix) + "\n\n")
 

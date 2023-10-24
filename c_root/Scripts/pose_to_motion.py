@@ -11,7 +11,7 @@ import numpy as np
 import os
 from scipy.spatial.transform import Rotation as R
 from tqdm import tqdm
-
+import sys
 from create_poses import generate_non_uniform_poses, save_rnd_gen_gt_info_to_file, save_sun_orientations_to_file, generate_random_sun_orientations
 from Utils.save_info_to_files_utils import save_camera_info_to_file
 import Utils.dataset_constants as dc
@@ -27,12 +27,16 @@ out_directory : str = os.path.join(proj_dir,"output")
 # Number of poses to generate
 num_poses = dc.val_num_poses
 
-parser = argparse.ArgumentParser(description='Your script description')
-parser.add_argument('object_name', help='Name of the object')
-parser.add_argument('pose_id', help='pose ID')
-args = parser.parse_args()
-main_obj_name = args.object_name
-pose_id = args.pose_id
+if len(sys.argv) != 2:
+    print("Usage: python script.py arg1 arg2")
+else:
+    arg1= sys.argv[1]
+
+    print(f"Argument 1: {arg1}")
+
+# Motion info
+main_obj_name = arg1
+
 
 # Ids of objects for pose generation
 object_ids: set[str] = {str(main_obj_name).partition('_')[0]}

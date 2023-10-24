@@ -11,8 +11,9 @@ import bpy
 import numpy as np
 import os
 from mathutils import Vector
-import plotly.graph_objs as go
-import plotly.offline as pyo
+#import plotly
+#import plotly.graph_objs as gFo
+#import plotly.offline as pyo
 from tqdm import tqdm
 import bmesh
 from mathutils.bvhtree import BVHTree
@@ -29,7 +30,7 @@ if len(sys.argv) < 2:
 arg1 = sys.argv[1]
 print("Argument 1:", arg1)
 
-main_obj_name = arg1
+main_obj_name = arg1.split("/")[3].split(".")[0]
 # Total mass of the entire system (kg)
 
 
@@ -40,7 +41,7 @@ num_samples = 100000
 log_file_name = "log_inertia.txt"
 proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 input_directory : str = os.path.join(proj_dir,"input")
-output_directory : str = os.path.join(proj_dir,"output")
+output_directory : str = os.path.join(proj_dir,"inertia","output")
 blend_file_path = os.path.join(proj_dir,"objects","blend",f"{main_obj_name}.blend")
 
 # Name of the output text file for the moment of inertia tensor
@@ -53,12 +54,31 @@ output_info_file_name = 'info.txt'
 ################################################
 
 # Function that applies all transforms to an object and its children
+
+
+def colorful_progress_bar(current_iteration, total_iterations, bar_length=40):
+    percent = current_iteration / total_iterations
+    arrow = "=" * int(round(bar_length * percent))
+    spaces = " " * (bar_length - len(arrow))
+
+    # Define colors using ANSI escape codes
+    color_start = "\033[1;32m"  # Green text
+    color_end = "\033[0m"  # Reset to default color
+
+    progress_bar = f"{color_start}[{arrow}{spaces}] {int(percent * 100)}%{color_end}"
+    return progress_bar
+
+
+
+
+
+
 def log_inertia(mess,file_name = log_file_name):
-    with open(os.path.join(output_directory, file_name), "a") as log_file:
+    with open(os.path.join(proj_dir,"logs", file_name), "a") as log_file:
         log_file.write(f"{mess}\n")
 
 
-def init_log_file(output_directory: str, log_file_name: str) -> None:
+def init_log_file(log_dir: str, log_file_name: str) -> None:
     """Initializes the log file with the motion ids to render
 
     Args:
@@ -66,13 +86,19 @@ def init_log_file(output_directory: str, log_file_name: str) -> None:
         motion_ids (list[str]): List of motion ids
         log_file_name (str): Name of the log file
     """
-    with open(os.path.join(output_directory, log_file_name), "w") as log_file:
+    with open(os.path.join(log_dir, log_file_name), "w") as log_file:
         log_file.write("\n\ninit file:\n")
+
+init_log_file(os.path.join(proj_dir,"logs"),log_file_name)
 def apply_all_transforms(obj):
     log_inertia("apply_all_trans")
-    bpy.ops.wm.open_mainfile(filepath=blend_file_path)
-    bpy.context.view_layer.objects.active = obj 
+    print(f"{bpy.context.view_layer.objects.active} is active object")
+    print(f"{obj.children} the children of {obj.name}")
+
+    log_inertia(obj)
+    bpy.context.view_layer.objects.active = obj
     obj.select_set(True)
+
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True) 
     obj.select_set(False)
     for child in obj.children:
@@ -192,6 +218,7 @@ def calculate_combined_inertia_matrix_and_approx_com(mesh_objects, total_mass, n
                     num_inside_points += 1
                     global_approx_com += point
                     all_inside_points.append(point)
+                    colorful_progress_bar(num_inside_points, num_samples)
                     break
             progress_bar.update(num_inside_points - progress_bar.n)
 
@@ -245,7 +272,7 @@ def save_info_to_file(file_path, bbox, size, mass, num_samples, global_approx_co
         f.write(f"\nNumber of samples for inertia matrix: {num_samples}\n")
 
 # Function that creates an HTML file with a 3D scatter plot of the points inside the object
-def create_html_from_inside_points(all_inside_points, main_obj_name, output_directory):
+"""def create_html_from_inside_points(all_inside_points, main_obj_name, output_directory):
     # Generate the 3D scatter plot
     x = [point[0] for point in all_inside_points]
     y = [point[1] for point in all_inside_points]
@@ -260,7 +287,7 @@ def create_html_from_inside_points(all_inside_points, main_obj_name, output_dire
     range_z = max(z) - min(z)
     max_range = max(range_x, range_y, range_z)
 
-    # Calculate aspect ratios for each axis
+     #Calculate aspect ratios for each axis
     aspect_ratio_x = range_x / max_range
     aspect_ratio_y = range_y / max_range
     aspect_ratio_z = range_z / max_range
@@ -276,18 +303,28 @@ def create_html_from_inside_points(all_inside_points, main_obj_name, output_dire
                                 )
                     )
 
-    fig = go.Figure(data=data, layout=layout)
+    #fig = go.Figure(data=data, layout=layout)
 
     # Save the scatter plot to an HTML file
-    output_file_path_plot = os.path.join(output_directory, f"{main_obj_name}_inside_points.html")
-    pyo.plot(fig, filename=output_file_path_plot, auto_open=False)
+    #output_file_path_plot = os.path.join(output_directory, f"{main_obj_name}_inside_points.html")
+    #pyo.plot(fig, filename=output_file_path_plot, auto_open=False)"""
 
 
 # Get a reference to the main object
 init_log_file(output_directory,log_file_name)
+print("loading blend file")
+bpy.ops.wm.open_mainfile(filepath=blend_file_path)
+
+
+
 print("looking for main object")
-if main_obj := bpy.data.objects.get(main_obj_name):
+print(f"{main_obj_name} this is the name")
+print(bpy.data.objects.keys())
+
+if main_obj := bpy.data.objects[main_obj_name]:
     print("main_object found")
+    print(f"{type(main_obj)} is main object type")
+    print(f"{type(bpy.context.view_layer.objects.active)} is active object type")
 
     # Make sure the object is at the origin, has no rotation and no scale
     main_obj.location = (0, 0, 0)
@@ -295,7 +332,9 @@ if main_obj := bpy.data.objects.get(main_obj_name):
     main_obj.rotation_quaternion = (1, 0, 0, 0)
     main_obj.scale = (1, 1, 1)
 
+
     # Apply all transformations and scales before continuing this is to avoid any issues when calculating the inertia matrix
+
     apply_all_transforms(main_obj)
 
     # Traverse hierarchy and find all mesh objects
@@ -338,7 +377,7 @@ if main_obj := bpy.data.objects.get(main_obj_name):
     save_matrix_to_file(output_file_path_combined, combined_inertia_matrix, main_obj_name)
 
     # Create an HTML file with a 3D scatter plot of all the inside points
-    create_html_from_inside_points(all_inside_points, main_obj_name, output_directory)
+    #create_html_from_inside_points(all_inside_points, main_obj_name, output_directory)
 
     # Save the bounding box and the size to a file
     output_file_name_info = f'{main_obj_name}_{output_info_file_name}'

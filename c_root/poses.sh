@@ -17,11 +17,13 @@ fi
 
 # ... Rest of the script ...
 
+
+
 # Execute your Python scripts with the full path to the Python executable
 blender -b -P "$SCRIPTS_DIR/tumble_function.py" "$OBJECT_NAME" # Reads pretty_matrix.txt
 blender -b -P "$SCRIPTS_DIR/create_poses.py" "$OBJECT_NAME" "$POSE_ID"
-blender -b -P "$SCRIPTS_DIR/create_multi_poses.py" "$OBJECT_NAME" "$POSE_ID"
 blender -b -P "$SCRIPTS_DIR/pose_to_motion.py" "$OBJECT_NAME" "$POSE_ID"
+blender -b -P "$SCRIPTS_DIR/create_multi_poses.py" "$OBJECT_NAME" "$POSE_ID"
 blender -b -P "$SCRIPTS_DIR/multi_pose_to_motions.py" "$OBJECT_NAME" "$POSE_ID"
 
 
