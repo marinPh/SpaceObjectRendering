@@ -113,7 +113,7 @@ inaccuracy_eig = calculate_inaccuracy(inertia_matrix, diag_matrix_eig)
 #
 write_pretty_file(diag_matrix_eig)
 # Print the results
-print(f"Original inertia matrix:\n{print_matrix(inertia_matrix)}\n")
+#print(f"Original inertia matrix:\n{print_matrix(inertia_matrix)}\n")
 print(f"Diagonal matrix with non-diagonal components zeroed out:\n{print_matrix(diag_matrix_zero)}\n")
 print("Inaccuracy with non-diagonal components zeroed out: {:6.2f}\n".format(inaccuracy_zero))
 print(f"Diagonal matrix after calculating eigenvectors:\n{print_matrix(diag_matrix_eig)}\n")

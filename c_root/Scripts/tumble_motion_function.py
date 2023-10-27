@@ -3,26 +3,29 @@ Author:     Andrew Lawrence Price, Tim Vaughan-Whitehead
 Date:       June 9, 2023
 Description: Generates motion for an object.
 """
-import argparse
-
+import sys
 import numpy as np
 from pyquaternion import Quaternion
 import math
 from tqdm import tqdm
 import re
 import os
-if len(sys.argv) != 3:
+print(f"------argv = {sys.argv}")
+if len(sys.argv) < 3:
     print("Usage: python script.py arg1 arg2")
+    print(sys.argv)
+    sys.exit(1)
 else:
-    arg1= sys.argv[1]
-    arg2 = sys.argv[2]
+    arg1 = sys.argv[-2]
+    arg2 = sys.argv[-1]
     print(f"Argument 1: {arg1}")
     print(f"Argument 2: {arg2}")
 # Motion info
-main_obj_name = arg1
+object_name = arg1
 pose_id = arg2
 
 proj_dir : str = os.path.dirname(os.path.dirname(__file__))
+print(f"-- we are working in {proj_dir}")
 input_output_directory : str = os.path.join(proj_dir,"input")
 output_dir : str = os.path.join(proj_dir,"output")
 
@@ -61,6 +64,7 @@ frame_t = 0.1
 
 ################################################
 def read_diagM_file(file_path):
+    #print("--read_diagM_file")
     with open(file_path, 'r') as f:
         # Read the entire file content
         file_content = f.read()
@@ -73,19 +77,22 @@ def read_diagM_file(file_path):
 
         # Remove square brackets and spaces, then convert the matrix string into a list of lists of floats
         matrix = np.array([list(map(float, re.sub(r'[\[\]\s]', '', line).split(','))) for line in matrix_string.strip().split(',\n') if line.strip()])
+        print(matrix)
         return matrix
-
-I = read_diagM_file(os.path.join(input_output_directory,object_name + "_diagonalized_inertia_matrix"))
+print(f"--- we are working with {object_name} and {pose_id}")
+I = read_diagM_file(os.path.join(input_output_directory, str(object_name) + "_diagonalized_inertia_matrix.txt"))
 # Main program
 
 def main():
+    print("--main")
     P, Q = create_object_motion(p0, q0, v0, w0, dt, sim_t, frame_t, I)
-    print(P, Q)
+    #print(P, Q)
     
 
 def create_object_motion(p0 : np.ndarray, q0 : Quaternion, v0 : np.ndarray, w0 : np.ndarray,
                   dt : float, sim_t : float, frame_t : float, 
                   I : np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    #print("--create_object_motion")
     """This function creates a motion for the given initial conditions.
 
     Args:
@@ -125,6 +132,7 @@ def create_object_motion(p0 : np.ndarray, q0 : Quaternion, v0 : np.ndarray, w0 :
 
 
 def quatDE(x : Quaternion):
+    #print("--quatDE")
     return np.array(
         [
             [x[0], -x[1], -x[2], -x[3]],
@@ -154,6 +162,7 @@ def f15_tumble_integrator(p : np.ndarray, q : Quaternion, v : np.ndarray,
       `W` - rotation vector time history
       `T` - total energy time history
     '''
+    #print("--f15_tumble_integrator")
 
     # Check normalization
     if math.isclose(sum(q.elements**2), 1, abs_tol=1e-5) == False:
@@ -184,6 +193,7 @@ def f15_tumble_integrator(p : np.ndarray, q : Quaternion, v : np.ndarray,
 
     # Euler's equations of motion
     def f(ww, I):
+        #print("--f")
         return -np.linalg.inv(I) @ np.cross(ww, I @ ww)
 
     # Initialize k vectors (slope estimators)

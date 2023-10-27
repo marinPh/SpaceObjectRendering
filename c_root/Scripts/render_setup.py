@@ -13,72 +13,78 @@ from mathutils import Vector
 import os
 import re
 import sys
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
+from Utils import dataset_constants as dc
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import Utils.dataset_constants as dc
+
+
 
 ################################################
 
 # Path for the file that contains the position data
 # File should be formatted as follows:
 # frame_nb, object_id1, q10, q1x, q1y, q1z, pos1x, pos1y, pos1z, object_id2, q20, q2x, q2y, q2z, pos2x, pos2y, pos2z, ...
-proj_dir : str = os.path.dirname(os.path.dirname(__file__))
+proj_dir: str = os.path.dirname(os.path.dirname(__file__))
 # Output directory
-input_directory : str = os.path.abspath("input")
-output_directory : str = os.path.abspath("output")
+input_directory: str = os.path.abspath("input")
+output_directory: str = os.path.abspath("output")
 
 # Motion ID
-if len(sys.argv) != 3:
+print(f"---> {sys.argv}")
+if len(sys.argv) < 3:
     print("Usage: python script.py arg1 arg2")
+
 else:
-    arg1= sys.argv[1]
-    arg2 = sys.argv[2]
+    arg1 = sys.argv[-2]
+    arg2 = sys.argv[-1]
     print(f"Argument 1: {arg1}")
     print(f"Argument 2: {arg2}")
 # Motion info
 main_obj_name = arg1
 pose_id = arg2
 
-blend_file_path = os.path.join(proj_dir,"objects","blend",f"{main_obj_name}.blend")
+blend_file_path = os.path.join(proj_dir, "objects", "blend", f"{main_obj_name}.blend")
 
-#TODO check if this does the right motion ID
-motion_id = str(main_obj_name).index(0,2) + str(args.pose_id)
+# TODO check if this does the right motion ID
+motion_id = main_obj_name.split('_')[0] + pose_id
 
 # Path for the file that contains the position and orientation data
 motions_path = os.path.join(input_directory, motion_id, dc.scene_gt_file_name)
 
 # Path for the file that contains the sun direction data
-sun_str = os.path.join(input_directory,motion_id,"sun_gt.txt")
+sun_str = os.path.join(input_directory, motion_id, "sun_gt.txt")
 sun_path = os.path.abspath(sun_str)
 
 # Path for the file that contains info about the scene (camera, light, etc.)
 info_path = os.path.join(input_directory, motion_id, dc.scene_info_file_name)
 
-
 # Light direction (if sun_path is None)
-light_dir = dc.light_default_direction # (1, 0, 0)
+light_dir = dc.light_default_direction  # (1, 0, 0)
 
 # Number of images to render (set to None for rendering all images from motion) Otherwise, renders the first nb_im images
 nb_im = None
 
+
 ################################################
 
 
-def apply_blender_animation(objects_dict: dict[str, str], 
-                             motions_path: str,
-                             sun_path: str | None, 
-                             info_path: str, 
-                             num_cols_per_object: int,
-                             lightsource_name: str, 
-                             camera_name: str, 
-                             cam_pos: Vector, 
-                             cam_rot: np.ndarray,
-                             light_pos: Vector,
-                             light_rot: np.ndarray, 
-                             light_energy: float, 
-                             nb_im: int | None) -> int:
+def apply_blender_animation(objects_dict: dict[str, str],
+                            motions_path: str,
+                            sun_path: str | None,
+                            info_path: str,
+                            num_cols_per_object: int,
+                            lightsource_name: str,
+                            camera_name: str,
+                            cam_pos: Vector,
+                            cam_rot: np.ndarray,
+                            light_pos: Vector,
+                            light_rot: np.ndarray,
+                            light_energy: float,
+                            nb_im: int | None) -> int:
     # Import motion and sun data 
-    motion_quat, trans_vec, objects_ids = motion_and_translation_import(motions_path, list(objects_dict.keys()), num_cols_per_object)
+    motion_quat, trans_vec, objects_ids = motion_and_translation_import(motions_path, list(objects_dict.keys()),
+                                                                        num_cols_per_object)
 
     sun_rot = None
     if sun_path is not None:
@@ -95,13 +101,14 @@ def apply_blender_animation(objects_dict: dict[str, str],
     init_scene(camera_name, lightsource_name, cam_pos, cam_rot, light_pos, light_rot, light_energy)
 
     create_animation(objects_dict, objects_ids, motion_quat, trans_vec, lightsource_name, sun_rot, nb_im=nb_im)
-    
-    return len(motion_quat[objects_ids[0]])
-    
 
-def motion_and_translation_import(mpath: str, objects_ids: list[str], NUM_COLS_PER_OBJECT: int=8) -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], list[str]]:
-    #import quaternion data from .txt file
-    with open (mpath) as f:
+    return len(motion_quat[objects_ids[0]])
+
+
+def motion_and_translation_import(mpath: str, objects_ids: list[str], NUM_COLS_PER_OBJECT: int = 8) -> tuple[
+    dict[str, np.ndarray], dict[str, np.ndarray], list[str]]:
+    # import quaternion data from .txt file
+    with open(mpath) as f:
         first_line = f.readline().replace("\n", "").replace(" ", "")
         print("\nFirst line from motion path :", first_line.split(","))
         num_cols = len(first_line.split(","))
@@ -112,17 +119,18 @@ def motion_and_translation_import(mpath: str, objects_ids: list[str], NUM_COLS_P
     frames = np.loadtxt(mpath, usecols=0, delimiter=",")
     if not np.all(np.diff(frames) == 1) or frames[0] != 0:
         raise ValueError("Frames are not consecutive or do not start at 0")
-    
+
     for i in range(1, num_cols, NUM_COLS_PER_OBJECT):
         if first_line.split(",")[i] not in objects_ids:
             fl = first_line.split(",")[i]
             raise ValueError(f"Object ID {fl, objects_ids} not recognized")
-        
-        motion_quat[first_line.split(",")[i]] = np.loadtxt(mpath, usecols=range(i+1, i+5), delimiter=",")
-        motion_trans[first_line.split(",")[i]] = np.loadtxt(mpath, usecols=range(i+5, i+8), delimiter=",")
+
+        motion_quat[first_line.split(",")[i]] = np.loadtxt(mpath, usecols=range(i + 1, i + 5), delimiter=",")
+        motion_trans[first_line.split(",")[i]] = np.loadtxt(mpath, usecols=range(i + 5, i + 8), delimiter=",")
         objects_in_file_ids.append(first_line.split(",")[i])
 
     return motion_quat, motion_trans, objects_in_file_ids
+
 
 def sun_direction_import(sunpath: str) -> np.ndarray:
     if os.path.exists(sunpath):
@@ -139,9 +147,9 @@ def scene_info_import(info_path: str) -> tuple[float, float, float]:
         for line in file:
             if "Sun orientation" in line:
                 if not (
-                    matches := re.findall(
-                        r'[-+]?\d+(?:\.\d+)?', line #Regex to extract sun orientation values
-                    )
+                        matches := re.findall(
+                            r'[-+]?\d+(?:\.\d+)?', line  # Regex to extract sun orientation values
+                        )
                 ):
                     raise ValueError(
                         f"Could not parse sun orientation from line: {line}"
@@ -155,7 +163,7 @@ def scene_info_import(info_path: str) -> tuple[float, float, float]:
     return sun_orientation
 
 
-#Transform sun direction vectors to Quaternions
+# Transform sun direction vectors to Quaternions
 def sun_vectors_to_quaternions(sun_vectors: np.ndarray) -> np.ndarray:
     quaternions = np.zeros((sun_vectors.shape[0], 4))
     for i, sun_vector in enumerate(sun_vectors):
@@ -179,10 +187,9 @@ def sun_vectors_to_quaternions(sun_vectors: np.ndarray) -> np.ndarray:
                 axis /= axis_norm
 
             theta = np.arccos(cos_theta)
-            quaternion = np.concatenate([[np.cos(theta/2)], np.sin(theta/2) * axis])
+            quaternion = np.concatenate([[np.cos(theta / 2)], np.sin(theta / 2) * axis])
             quaternions[i] = quaternion
     return quaternions
-
 
 
 def apply_sun_quaternion(sun_obj, sun_quaternion, frame_num):
@@ -191,7 +198,10 @@ def apply_sun_quaternion(sun_obj, sun_quaternion, frame_num):
         sun_obj.rotation_quaternion = sun_quaternion[frame_num]
         sun_obj.keyframe_insert(data_path="rotation_quaternion", index=-1)
 
-def create_animation(objects_dict: dict[str, str], object_ids: list[str], motion_quat: dict, trans_vec: dict, lightsource_name: str="Lightsource", sun_dir: np.ndarray | None=None, nb_im: int|None=None) -> None:
+
+def create_animation(objects_dict: dict[str, str], object_ids: list[str], motion_quat: dict, trans_vec: dict,
+                     lightsource_name: str = "Lightsource", sun_dir: np.ndarray | None = None,
+                     nb_im: int | None = None) -> None:
     # generating motion and rendering
 
     # Either render all images in motion or only the first nb_im images
@@ -201,66 +211,73 @@ def create_animation(objects_dict: dict[str, str], object_ids: list[str], motion
     # 
     for frame_num in range(length):
         # for every frame
-        bpy.context.scene.frame_set(frame_num) 
+        bpy.context.scene.frame_set(frame_num)
 
         # insert sun direction
-        apply_sun_quaternion(bpy.data.objects[lightsource_name], sun_dir, frame_num) 
+        apply_sun_quaternion(bpy.data.objects[lightsource_name], sun_dir, frame_num)
         for object_id in object_ids:
             insert_object_keyframes(objects_dict, object_id, motion_quat, trans_vec, frame_num)
 
         frame_num += 1
 
-def insert_object_keyframes(objects_dict: dict[str, str], object_id: str, motion_quat: dict, trans_vec: dict, frame_nb: int) -> None:
-        obj = bpy.data.objects[objects_dict[object_id]] 
-        # change model position
-        obj.location = trans_vec[object_id][frame_nb, :]
-        # insert changes in position into keyframe
-        obj.keyframe_insert(data_path="location", index=-1)
-        # change model orientation
-        obj.rotation_quaternion = motion_quat[object_id][frame_nb, :]
-        # insert changes in orientation into keyframe
-        obj.keyframe_insert(data_path="rotation_quaternion", index=-1)
+
+def insert_object_keyframes(objects_dict: dict[str, str], object_id: str, motion_quat: dict, trans_vec: dict,
+                            frame_nb: int) -> None:
+    obj = bpy.data.objects[objects_dict[object_id]]
+    # change model position
+    obj.location = trans_vec[object_id][frame_nb, :]
+    # insert changes in position into keyframe
+    obj.keyframe_insert(data_path="location", index=-1)
+    # change model orientation
+    obj.rotation_quaternion = motion_quat[object_id][frame_nb, :]
+    # insert changes in orientation into keyframe
+    obj.keyframe_insert(data_path="rotation_quaternion", index=-1)
+
 
 def init_objects(objects_dict: dict[str, str], object_ids: list[str]):
     # Clear animation data and constraints for all objects
-    for obj in bpy.data.objects: 
+    for obj in bpy.data.objects:
         obj.animation_data_clear()
         obj.constraints.clear()
 
     for id in objects_dict:
-        target = bpy.data.objects[objects_dict[id]] 
+        target = bpy.data.objects[objects_dict[id]]
         target.rotation_mode = "QUATERNION"
         target.hide_render = id not in object_ids  # Set final render
         target.location = (np.nan, np.nan, np.nan)  # Set location to NaN
         target.rotation_quaternion = (np.nan, np.nan, np.nan, np.nan)  # Set rotation to NaN
 
-def init_scene(camera_name: str, light_name: str, cam_pos: Vector, 
-               cam_rot: np.ndarray, light_pos: Vector, 
+
+def init_scene(camera_name: str, light_name: str, cam_pos: Vector,
+               cam_rot: np.ndarray, light_pos: Vector,
                light_rot: np.ndarray, light_energy: float):
     # Set camera position and rotation
     init_camera(camera_name, cam_pos, cam_rot)
     init_sun(light_name, light_pos, light_rot, light_energy)
-    
+
+
 def init_camera(camera_name: str, cam_pos: Vector, cam_rot: np.ndarray):
     # Set camera position and rotation
-    camera = bpy.data.objects[camera_name] 
+    camera = bpy.data.objects[camera_name]
     camera.location = cam_pos
     camera.rotation_mode = 'QUATERNION'
     camera.rotation_quaternion = cam_rot
-    
+
+
 def init_sun(sun_name: str, sun_pos: Vector, sun_rot: np.ndarray, light_energy: float):
-    sun = bpy.data.objects[sun_name] 
+    sun = bpy.data.objects[sun_name]
     sun.location = sun_pos
     sun.rotation_mode = 'QUATERNION'
     sun_quaternion_rot = sun_vectors_to_quaternions(np.array([sun_rot]))[0]
     sun.rotation_quaternion = sun_quaternion_rot
-    lamp_data = bpy.data.lights[sun_name] 
-    lamp_data.energy = light_energy # Set light energy
-    
+    lamp_data = bpy.data.lights[sun_name]
+    lamp_data.energy = light_energy  # Set light energy
+
+
 # main function
 if __name__ == '__main__':
     bpy.ops.wm.open_mainfile(filepath=blend_file_path)
-    apply_blender_animation(motions_path=motions_path, 
+    apply_blender_animation(motions_path=motions_path,
                             sun_path=sun_path,
                             info_path=info_path,
                             num_cols_per_object=dc.NUM_COLS_PER_OBJECT,

@@ -10,14 +10,19 @@ import argparse
 import bpy
 import sys
 import os
+parent_dir = (os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
+print(f"--->{parent_dir}")
+
+from render_setup import apply_blender_animation
 import importlib
 
 sys.path.append(os.path.abspath("."))
 sys.path.append(os.path.abspath("Utils"))
 
-import render_setup
+
   # Reload the module to get the latest changes
-from render_setup import apply_blender_animation
+
 import Utils.dataset_constants as dc
 
 ################################################
@@ -31,11 +36,11 @@ input_directory: str = os.path.join(proj_dir,"input")
 # Output directory
 
 
-if len(sys.argv) != 3:
+if len(sys.argv) < 3:
     print("Usage: python script.py arg1 arg2")
 else:
-    arg1= sys.argv[1]
-    arg2 = sys.argv[2]
+    arg1= sys.argv[-2]
+    arg2 = sys.argv[-1]
     print(f"Argument 1: {arg1}")
     print(f"Argument 2: {arg2}")
 # Motion info
@@ -43,7 +48,7 @@ main_obj_name = arg1
 pose_id = arg2
 
 # Id of the objects to render
-group_id: str = main_obj_name
+group_id: str = main_obj_name.split("_")[0]
 # First motion id
 first_motion_id: str = pose_id
 # Number of motions to render
