@@ -8,7 +8,13 @@ if [ $# -ge 2 ]; then
   POSE_ID="$2"
 fi
 
-blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/dataset_constants.py"
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/Utils/dataset_constants.py"
+
+#blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/Utils/parser.py"
+
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/Utils/__init__.py"
+
+
 blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/render_setup.py" "$OBJECT_NAME" "$POSE_ID"
 
-eval "blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P $SCRIPTS_DIR/render_motions.py" "$OBJECT_NAME" "$POSE_ID"
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/render_motions.py" "$OBJECT_NAME" "$POSE_ID"

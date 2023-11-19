@@ -125,7 +125,6 @@ object_bounding_boxes: dict[str, np.ndarray] = {
     "03": np.array([[-7.6050, -3.0449, -1.4568], [7.6168, 3.7835, 1.5087]]),
     "04": np.array([[-5.7771, -2.0733, -2.1503], [5.4408, 2.0764, 2.1112]])
 }
-
 # Object inertia matrices (inertia tensor)
 object_inertia_matrices: dict[str, np.ndarray] = {
     "01": np.array([[119734.71,  0.00,   0.00], [  0.00, 44900.79,   0.00], [  0.00,   0.00, 133802.82]]),

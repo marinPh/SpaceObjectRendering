@@ -11,6 +11,9 @@ import numpy as np
 from pyquaternion import Quaternion
 import os
 import sys
+proj_dir: str = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.join(proj_dir, "scripts", "Utils"))
 
 from pose_to_motion import save_vals_to_file, get_group_id, bbox_isolated, adjust_bounding_box
 

@@ -16,6 +16,7 @@ sys.path.append(os.path.join(proj_dir, "scripts", "Utils"))
 
 from Utils.save_info_to_files_utils import save_camera_info_to_file
 import Utils.dataset_constants as dc
+from Utils import parser as prs
 
 ################################################
 # User-defined inputs
@@ -23,16 +24,7 @@ import Utils.dataset_constants as dc
 input_dir: str = os.path.join(proj_dir, "input")
 output_directory: str = os.path.join(proj_dir, "output")
 
-if len(sys.argv) != 3:
-    print("Usage: python script.py arg1 arg2")
-else:
-    arg1 = sys.argv[1]
-    arg2 = sys.argv[2]
-    print(f"Argument 1: {arg1}")
-    print(f"Argument 2: {arg2}")
-# Motion info
-main_obj_name = arg1
-pose_id = arg2
+main_obj_name, pose_id = prs.pars_2_args(sys.argv)
 
 # Number of poses to generate
 num_poses: int = dc.val_num_poses

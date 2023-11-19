@@ -20,6 +20,8 @@ from Utils import dataset_constants as dc
 
 
 
+
+
 ################################################
 
 # Path for the file that contains the position data
@@ -30,19 +32,18 @@ proj_dir: str = os.path.dirname(os.path.dirname(__file__))
 input_directory: str = os.path.abspath("input")
 output_directory: str = os.path.abspath("output")
 
+
 # Motion ID
 print(f"---> {sys.argv}")
-if len(sys.argv) < 3:
+sys_argv = sys.argv
+if len(sys_argv) < 3:
     print("Usage: python script.py arg1 arg2")
-
 else:
-    arg1 = sys.argv[-2]
-    arg2 = sys.argv[-1]
-    print(f"Argument 1: {arg1}")
-    print(f"Argument 2: {arg2}")
+    main_obj_name = sys_argv[-2]
+    pose_id = sys_argv[-1]
 # Motion info
-main_obj_name = arg1
-pose_id = arg2
+
+
 
 blend_file_path = os.path.join(proj_dir, "objects", "blend", f"{main_obj_name}.blend")
 
@@ -255,13 +256,14 @@ def init_scene(camera_name: str, light_name: str, cam_pos: Vector,
     init_camera(camera_name, cam_pos, cam_rot)
     init_sun(light_name, light_pos, light_rot, light_energy)
 
-
+#TODO recheck the inputs of camera FOV FOCAL LENGTH and SENSOR WIDTH
 def init_camera(camera_name: str, cam_pos: Vector, cam_rot: np.ndarray):
     # Set camera position and rotation
     camera = bpy.data.objects[camera_name]
     camera.location = cam_pos
     camera.rotation_mode = 'QUATERNION'
     camera.rotation_quaternion = cam_rot
+
 
 
 def init_sun(sun_name: str, sun_pos: Vector, sun_rot: np.ndarray, light_energy: float):

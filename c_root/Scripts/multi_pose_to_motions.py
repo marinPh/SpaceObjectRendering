@@ -20,11 +20,11 @@ from Utils.save_info_to_files_utils import save_camera_info_to_file
 #############################################
 import sys
 
-if len(sys.argv) != 3:
+if len(sys.argv) < 3:
     print("Usage: python script.py arg1 arg2")
 else:
-    arg1= sys.argv[1]
-    arg2 = sys.argv[2]
+    arg1= sys.argv[-2]
+    arg2 = sys.argv[-1]
     print(f"Argument 1: {arg1}")
     print(f"Argument 2: {arg2}")
 # Motion info

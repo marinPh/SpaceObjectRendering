@@ -10,6 +10,7 @@ import argparse
 import bpy
 import sys
 import os
+from tqdm import tqdm
 parent_dir = (os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 print(f"--->{parent_dir}")
@@ -124,40 +125,36 @@ def main() -> None:
         bpy.context.scene.frame_end = nb_frames - 1 
         
         # Register the handlers
-        bpy.app.handlers.render_post.append(update_progress_bar)
+        #creation and update of the progress bar with tqdm
 
-# Render the animation
+
+        
+# Initialize the progress bar
+        pbar = tqdm(total=nb_frames)
+
+        def update_progress_bar(scene):
+            # Update the progress bar
+            print("update_progress_bar")
+            pbar.update(1)
+
+        # Register the handlers
+        bpy.app.handlers.render_post.append(update_progress_bar)
+        
+
+        # Render the animation
         bpy.ops.render.render('INVOKE_DEFAULT', animation=True)
 
-# Remove the handler when rendering is finished
+        # Remove the handler when rendering is finished
         bpy.app.handlers.render_post.remove(update_progress_bar)
+        pbar.close()
+
         add_rendered_motion_to_log(output_directory, motion, dc.progress_log_file_name)
         
         
 import blf
 
 # Function to draw the progress bar
-def draw_progress_bar():
-    progress = bpy.context.scene.frame_current / bpy.context.scene.frame_end
-    width = 300
-    height = 20
-    x = (bpy.context.area.width - width) / 2
-    y = 50
-    
-    # Clear the area for the progress bar
-    bpy.context.area.regions[5].tag_redraw()
-    
-    # Draw the progress bar
-    blf.position(0, x, y, 0)
-    blf.size(0, 20, 72)
-    blf.draw(0, f"Rendering Frame {bpy.context.scene.frame_current}/{bpy.context.scene.frame_end}")
-    bpy.context.area.regions[5].tag_redraw()
-    
-# Function to update the progress bar
-def update_progress_bar(scene):
-    if bpy.ops.render.is_running:
-        draw_progress_bar()    
-    
+
 def init_log_file(output_directory : str, motion_ids : list[str], log_file_name : str) -> None:
     """Initializes the log file with the motion ids to render
     
