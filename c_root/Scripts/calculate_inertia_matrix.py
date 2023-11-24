@@ -41,7 +41,7 @@ num_samples = 100000
 log_file_name = "log_inertia.txt"
 proj_dir : str = os.path.dirname(os.path.dirname(__file__))
 input_directory : str = os.path.join(proj_dir,"input")
-output_directory : str = os.path.join(proj_dir,"inertia","output")
+output_directory : str = os.path.join(proj_dir,"objects","inertia")
 blend_file_path = os.path.join(proj_dir,"objects","blend",f"{main_obj_name}.blend")
 
 # Name of the output text file for the moment of inertia tensor

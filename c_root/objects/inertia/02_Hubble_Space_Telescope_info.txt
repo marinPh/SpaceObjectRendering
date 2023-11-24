@@ -1,0 +1,11 @@
+Information for object '02_Hubble_Space_Telescope':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 17.98 m, 13.27 m, 13.23 m
+Center of Mass (x, y, z): [-0.01, -0.00, -0.01]
+
+Bounding box:
+    Min corner (x, y, z): [-12.2696, -6.5803, -6.6335]
+    Max corner (x, y, z): [5.7087, 6.6909, 6.5916]
+
+Number of samples for inertia matrix: 100000

@@ -1,0 +1,12 @@
+sun_path=/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2f491c84c6a4df22fbc273573379dcf5170c6026a2791202d0f4e7d9972a8b42/Documents/BA5/ProjB/renderCommand/c_root/input/02000/sun_gt.txt
+info_path=/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2f491c84c6a4df22fbc273573379dcf5170c6026a2791202d0f4e7d9972a8b42/Documents/BA5/ProjB/renderCommand/c_root/input/02000/scene_gt_info.txt
+num_cols=8
+object_name={'01': '01_James_Webb_Space_Telescope', '02': '02_Hubble_Space_Telescope', '03': '03_CosmosLink', '04': '04_Rocket_Body'}
+camera_name=Camera
+light_name=Light
+camera_pos=[0 0 0]
+camera_dir=[0 1 0 0]
+light_pos=[0 0 0]
+light_default_direction=[0 0 1]
+light_energy=1360
+nb_im=None

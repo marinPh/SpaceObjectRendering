@@ -39,7 +39,8 @@ echo "starting matrix calculation"
 blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/calculate_inertia_matrix.py" -- "$OBJECT_NAME"
 echo "matrix calculation done"
 echo "starting diagonalisation"
-blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -"$SCRIPTS_DIR/diagonalise_matrix.py"  -- "$OBJECT_NAME" # Reads pretty_matrix.txt
+echo "--mainobj = ${OBJECT_NAME}"
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/diagonalise_matrix.py"  -- "$OBJECT_NAME" # Reads pretty_matrix.txt
 echo "diagonalisation done"
 echo "next .sh to use is pose.sh"
 

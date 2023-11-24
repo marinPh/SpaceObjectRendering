@@ -26,18 +26,21 @@ if len(sys.argv) < 2:
 arg1 = sys.argv[1]
 print("Argument 1:", arg1)
 
+arg1 = (str(arg1)).split("/")[-1].split(".")[0]
 main_obj_name = arg1
-input_output_directory : str = os.path.join(proj_dir,"objects","inertia")
-output_dir : str = os.path.join(proj_dir,"objects","diag")
+print("Argument 1:", arg1)
+input_directory : str = os.path.join(proj_dir,"objects","inertia")
+output_directory : str = os.path.join(proj_dir,"objects","diag")
 # Input file name (should correspond to the output file name of the inertia matrix calculator)
-input_file_name = main_obj_name+'_inertia_matrix.txt'
+input_file_name = arg1 + '_inertia_matrix.txt'
+print(f"Input file name: {arg1}")
 # Name of the output text files
 # The object name will be prepended to the output file name
-output_file_name = main_obj_name+'_diagonalized_inertia_matrix.txt'
+output_file_name = arg1+'_diagonalized_inertia_matrix.txt'
 
 ################################################
 def write_pretty_file(matrix):
-    with open(os.path.join(output_dir,output_file_name),"w") as file:
+    with open(os.path.join(output_directory,output_file_name),"w+") as file:
         formatted_matrix = ",\n".join(["    [{:6.2f}, {:6.2f}, {:6.2f}]".format(*row) for row in matrix])
         file.write("np.array([\n" + formatted_matrix + "\n])")
 def zero_non_diagonal(matrix):
@@ -94,7 +97,8 @@ def write_inaccuracy_and_rotation_to_file(file, method_name, inaccuracy, rotatio
     file.write("\n")
 
 # Load the inertia matrix from the file
-input_file_path = os.path.join(input_output_directory, input_file_name)
+input_file_path = os.path.join(input_directory, input_file_name)
+print(f"Loading inertia matrix from file '{input_file_path}'...")
 with open(input_file_path, 'r') as f:
     file_content = f.read()
 object_name = main_obj_name
@@ -125,8 +129,8 @@ print("Inaccuracy with diagonalization using eigenvectors: {:6.2f}\n".format(ina
 
 # Write the results to the output file
 output_file_name_with_object = f"{object_name}_{output_file_name}"
-output_file_path = os.path.join(input_output_directory, output_file_name_with_object)
-with open(os.path.join(output_dir,output_file_name), 'w') as output_file:
+output_file_path = os.path.join(output_directory, output_file_name_with_object)
+with open(os.path.join(output_directory,output_file_name), 'w') as output_file:
     output_file.write(f"Original inertia matrix for object '{object_name}':\n")
     output_file.write(print_matrix(inertia_matrix) + "\n\n")
 

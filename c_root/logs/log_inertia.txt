@@ -2,15 +2,15 @@
 
 init file:
 apply_all_trans
-<bpy_struct, Object("02_Hubble_Space_Telescope") at 0x7f30e1b90608>
+<bpy_struct, Object("02_Hubble_Space_Telescope") at 0x7fd9f1b4ea08>
 apply_all_trans
-<bpy_struct, Object("02_Antenna") at 0x7f30e3fbda08>
+<bpy_struct, Object("02_Antenna") at 0x7fd9f1b4de08>
 apply_all_trans
-<bpy_struct, Object("02_Body") at 0x7f30e1b90008>
+<bpy_struct, Object("02_Body") at 0x7fd9f1b4e408>
 apply_all_trans
-<bpy_struct, Object("02_Sensors") at 0x7f30e1b90c08>
+<bpy_struct, Object("02_Sensors") at 0x7fd9f1b4f008>
 apply_all_trans
-<bpy_struct, Object("02_Solar_panel") at 0x7f30e1b91208>
+<bpy_struct, Object("02_Solar_panel") at 0x7fd9f1b4f608>
 traverse
 traverse
 traverse

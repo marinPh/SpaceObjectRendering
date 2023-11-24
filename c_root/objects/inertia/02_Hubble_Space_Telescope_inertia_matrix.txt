@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '02_Hubble_Space_Telescope':
+np.array([
+    [ 27727.55,  758.73, -216.55],
+    [ 758.73,  196521.08, -25.74],
+    [-216.55, -25.74,  198065.01]])
