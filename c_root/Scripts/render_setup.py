@@ -216,8 +216,8 @@ def create_animation(objects_dict: dict[str, str], object_ids: list[str], motion
 
         # insert sun direction
         apply_sun_quaternion(bpy.data.objects[lightsource_name], sun_dir, frame_num)
-        for object_id in object_ids:
-            insert_object_keyframes(objects_dict, object_id, motion_quat, trans_vec, frame_num)
+
+        insert_object_keyframes(objects_dict, main_obj_name.split("_")[0], motion_quat, trans_vec, frame_num)
 
         frame_num += 1
 
@@ -241,12 +241,15 @@ def init_objects(objects_dict: dict[str, str], object_ids: list[str]):
         obj.animation_data_clear()
         obj.constraints.clear()
 
-    for id in objects_dict:
-        target = bpy.data.objects[objects_dict[id]]
-        target.rotation_mode = "QUATERNION"
-        target.hide_render = id not in object_ids  # Set final render
-        target.location = (np.nan, np.nan, np.nan)  # Set location to NaN
-        target.rotation_quaternion = (np.nan, np.nan, np.nan, np.nan)  # Set rotation to NaN
+    id = main_obj_name.split("_")[0]
+    print(f"Initializing object {id}")
+    print(f"keys: {objects_dict.keys()}")
+    print(f"Object name: {objects_dict[id]}")
+    target = bpy.data.objects[objects_dict[id]]
+    target.rotation_mode = "QUATERNION"
+    target.hide_render = id not in object_ids  # Set final render
+    target.location = (np.nan, np.nan, np.nan)  # Set location to NaN
+    target.rotation_quaternion = (np.nan, np.nan, np.nan, np.nan)  # Set rotation to NaN
 
 
 def init_scene(camera_name: str, light_name: str, cam_pos: Vector,

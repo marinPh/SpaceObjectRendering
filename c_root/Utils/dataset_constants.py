@@ -115,7 +115,8 @@ object_names : dict[str, str] = {
     "01": "01_James_Webb_Space_Telescope",
     "02": "02_Hubble_Space_Telescope",
     "03": "03_CosmosLink",
-    "04": "04_Rocket_Body"
+    "04": "04_Rocket_Body",
+    "5": "5_MTM"
 }
 
 # Object bounding boxes

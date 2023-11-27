@@ -98,10 +98,11 @@ def apply_all_transforms(obj):
     log_inertia(obj)
     bpy.context.view_layer.objects.active = obj
     obj.select_set(True)
-
+    print(f"{obj.name} is active object")
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True) 
     obj.select_set(False)
     for child in obj.children:
+
         apply_all_transforms(child)
 
 # Function to traverse object hierarchy and find all mesh objects
