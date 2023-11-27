@@ -2,18 +2,9 @@
 
 init file:
 apply_all_trans
-<bpy_struct, Object("02_Hubble_Space_Telescope") at 0x7fd9f1b4ea08>
+<bpy_struct, Object("5_MTM") at 0x7f046fc78a08>
 apply_all_trans
-<bpy_struct, Object("02_Antenna") at 0x7fd9f1b4de08>
-apply_all_trans
-<bpy_struct, Object("02_Body") at 0x7fd9f1b4e408>
-apply_all_trans
-<bpy_struct, Object("02_Sensors") at 0x7fd9f1b4f008>
-apply_all_trans
-<bpy_struct, Object("02_Solar_panel") at 0x7fd9f1b4f608>
-traverse
-traverse
-traverse
+<bpy_struct, Object("SM_MTM") at 0x7f046fce0c08>
 traverse
 traverse
 create_bmesh_objects
