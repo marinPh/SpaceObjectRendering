@@ -144,6 +144,7 @@ def combined_bbox(mesh_objects):
     max_corner = np.zeros(3)
     for i, obj in enumerate(mesh_objects):
         bbox = [Vector(corner) for corner in obj.bound_box]
+        print(f"bbox: {bbox} of {obj.name}")
         if i == 0:
             min_corner = np.array(
                 [
@@ -180,6 +181,7 @@ def combined_bbox(mesh_objects):
 
 # Function that checks if a point is inside a BVH tree
 def point_is_inside_tree(point, bvh_tree):
+   
     is_inside = True
     for _ in range(7):
         point = Vector(point)
@@ -210,6 +212,7 @@ def calculate_combined_inertia_matrix_and_approx_com(mesh_objects, total_mass, n
     num_inside_points = 0
 
     print("\nSampling points...\n")
+    print(f"min_corner: {min_corner}, max_corner: {max_corner}")
 
     with tqdm(total=num_samples) as progress_bar:
         while num_inside_points < num_samples:
@@ -221,6 +224,7 @@ def calculate_combined_inertia_matrix_and_approx_com(mesh_objects, total_mass, n
                     all_inside_points.append(point)
                     colorful_progress_bar(num_inside_points, num_samples)
                     break
+                
             progress_bar.update(num_inside_points - progress_bar.n)
 
     global_approx_com /= num_inside_points
