@@ -21,6 +21,18 @@ from mathutils.bvhtree import BVHTree
 ################################################
 # User-defined inputs
 
+def scale_all_children(scale_factor: float, object):
+    """Scales all children of an object by a given factor
+
+    Args:
+        scale_factor (float): Scale factor
+        object (bpy.types.Object): Object
+    """
+    for child in object.children:
+        child.scale *= scale_factor
+        scale_all_children(scale_factor, child)
+    
+
 # Name of the main object
 if len(sys.argv) < 2:
     print("Usage: python calculate_inertia_matrix.py <arg1>")
@@ -144,7 +156,7 @@ def combined_bbox(mesh_objects):
     max_corner = np.zeros(3)
     for i, obj in enumerate(mesh_objects):
         bbox = [Vector(corner) for corner in obj.bound_box]
-        print(f"bbox: {bbox} of {obj.name}")
+        print(f"bbox:{i} {obj.dimensions} of {obj.name}")
         if i == 0:
             min_corner = np.array(
                 [
@@ -337,7 +349,9 @@ if main_obj := bpy.data.objects[main_obj_name]:
     main_obj.rotation_quaternion = (1, 0, 0, 0)
     main_obj.scale = (1, 1, 1)
 
-
+    # !!!! if you use scale an object in blender, you have to apply the scale before you can use the scale in the script
+    #uncomment the following line if you want to scale the object and replace the 0.001 with the scale factor
+    #scale_all_children(0.001, main_obj)   
     # Apply all transformations and scales before continuing this is to avoid any issues when calculating the inertia matrix
 
     apply_all_transforms(main_obj)

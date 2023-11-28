@@ -18,7 +18,10 @@ echo "parser"
 echo "importing modules"
 blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/Utils/__init__.py"
 
+
 echo "render setup"
 blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/render_setup.py" "$OBJECT_NAME" "$POSE_ID"
+
 echo "render motions"
+echo "be sure to have chosen the nb of samples to take as it is hard coded in render_motions.py default => 2048 or might ave been changed by accident"
 blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/render_motions.py" "$OBJECT_NAME" "$POSE_ID"

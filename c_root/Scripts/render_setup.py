@@ -122,9 +122,10 @@ def motion_and_translation_import(mpath: str, objects_ids: list[str], NUM_COLS_P
         raise ValueError("Frames are not consecutive or do not start at 0")
 
     for i in range(1, num_cols, NUM_COLS_PER_OBJECT):
+        """
         if first_line.split(",")[i] not in objects_ids:
             fl = first_line.split(",")[i]
-            raise ValueError(f"Object ID {fl, objects_ids} not recognized")
+            raise ValueError(f"Object ID {fl, objects_ids} not recognized")"""
 
         motion_quat[first_line.split(",")[i]] = np.loadtxt(mpath, usecols=range(i + 1, i + 5), delimiter=",")
         motion_trans[first_line.split(",")[i]] = np.loadtxt(mpath, usecols=range(i + 5, i + 8), delimiter=",")
@@ -224,7 +225,7 @@ def create_animation(objects_dict: dict[str, str], object_ids: list[str], motion
 
 def insert_object_keyframes(objects_dict: dict[str, str], object_id: str, motion_quat: dict, trans_vec: dict,
                             frame_nb: int) -> None:
-    obj = bpy.data.objects[objects_dict[object_id]]
+    obj = bpy.data.objects[main_obj_name]
     # change model position
     obj.location = trans_vec[object_id][frame_nb, :]
     # insert changes in position into keyframe
@@ -244,8 +245,8 @@ def init_objects(objects_dict: dict[str, str], object_ids: list[str]):
     id = main_obj_name.split("_")[0]
     print(f"Initializing object {id}")
     print(f"keys: {objects_dict.keys()}")
-    print(f"Object name: {objects_dict[id]}")
-    target = bpy.data.objects[objects_dict[id]]
+    print(f"Object name: {main_obj_name}")
+    target = bpy.data.objects[main_obj_name]
     target.rotation_mode = "QUATERNION"
     target.hide_render = id not in object_ids  # Set final render
     target.location = (np.nan, np.nan, np.nan)  # Set location to NaN

@@ -1,0 +1,27 @@
+Original inertia matrix for object '6_CHEOPS_LP':
+np.array([
+    [2330.82,  65.30,  -6.98],
+    [ 65.30, 2460.68, -18.68],
+    [ -6.98, -18.68, 2063.00]
+])
+
+Total combined inertia matrix for object '6_CHEOPS_LP' (zeroing out all non-diagonal components):
+np.array([
+    [2330.82,   0.00,   0.00],
+    [  0.00, 2460.68,   0.00],
+    [  0.00,   0.00, 2063.00]
+])
+
+Zeroing out non-diagonal components Inaccuracy:  96.56
+
+Total combined inertia matrix for object '6_CHEOPS_LP' (using eigenvectors):
+np.array([
+    [2488.77,   0.00,   0.00],
+    [  0.00, 2303.67,   0.00],
+    [  0.00,   0.00, 2062.07]
+])
+
+Diagonalization using eigenvectors Inaccuracy: 242.75
+Diagonalization using eigenvectors Rotation applied (in degrees): [  2.71,   1.81, -179.90]
+
+The inaccuracy is the Frobenius norm (like a Euclidean distance) between the original matrix and the matrix after diagonalization.

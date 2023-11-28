@@ -1,0 +1,11 @@
+Information for object '6_CHEOPS_LP':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 1.30 m, 1.55 m, 1.68 m
+Center of Mass (x, y, z): [-0.06, -0.14, -0.00]
+
+Bounding box:
+    Min corner (x, y, z): [-0.5507, -0.6742, -0.7445]
+    Max corner (x, y, z): [0.7507, 0.8742, 0.9325]
+
+Number of samples for inertia matrix: 100000

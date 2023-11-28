@@ -112,6 +112,8 @@ def main() -> None:
         nodes = bpy.context.scene.node_tree.nodes 
         if dc.mask_node_name not in nodes or dc.seg_node_name not in nodes:
             raise KeyError("No mask or segmentation node found in the compositing tree")
+        # set nb of samples
+        bpy.context.scene.cycles.samples = 32
         
         mask_node = nodes[dc.mask_node_name]
         seg_node = nodes[dc.seg_node_name]
