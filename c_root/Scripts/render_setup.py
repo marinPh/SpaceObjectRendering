@@ -147,28 +147,27 @@ def scene_info_import(info_path: str) -> tuple[float, float, float]:
     sun_orientation: tuple[float, float, float] | None = None
     with open(info_path, "r") as file:
         # Iterate through each line in the file
-        for line in file:
-            if "Sun orientation" in line:
-                if not (
-                        matches := re.findall(
-                            r'[-+]?\d+(?:\.\d+)?', line  # Regex to extract sun orientation values
-                        )
-                ):
-                    raise ValueError(
-                        f"Could not parse sun orientation from line: {line}"
-                    )
-                # Extracted values as floats
-                sun_orientation = tuple(float(match) for match in matches)
-                break
-    if sun_orientation is None:
-        raise ValueError("No sun orientation found in file")
-    print("Sun orientation:", sun_orientation)
-    return sun_orientation
+        content = file.read()
+
+    # Regular expression to extract Sun orientation information
+   
+    # Search for the line containing Sun orientation information
+    sun_orientation_line = re.search(r"Sun orientation \[x, y, z\] \(unit vector\): \[.*\]", content)
+
+    if sun_orientation_line:
+        # Extract values from the line using regex
+        values = re.findall(r"[-+]?[.]?[\d]+(?:,\d\d\d)*[\.]?\d*(?:[eE][-+]?\d+)?", sun_orientation_line.group())
+        sun_orientation_values = [float(value) for value in values]
+        return np.array(sun_orientation_values)
+    else:
+        print("Unable to extract Sun orientation information.")
+        return None
 
 
 # Transform sun direction vectors to Quaternions
 def sun_vectors_to_quaternions(sun_vectors: np.ndarray) -> np.ndarray:
     quaternions = np.zeros((sun_vectors.shape[0], 4))
+    print(f"sun_vectors = {sun_vectors}")
     for i, sun_vector in enumerate(sun_vectors):
         # Normalize the sun vector
         norm = np.linalg.norm(sun_vector)
@@ -176,6 +175,7 @@ def sun_vectors_to_quaternions(sun_vectors: np.ndarray) -> np.ndarray:
             quaternions[i] = np.array([1.0, 0.0, 0.0, 0.0])  # Default quaternion for zero vector
         else:
             sun_vector = sun_vector / norm  # Normalize the vector
+            print ("sun_vector ----->", sun_vector)
 
             # Forward direction in the target orientation
             forward = np.array([0, 0, -1])
@@ -276,6 +276,7 @@ def init_sun(sun_name: str, sun_pos: Vector, sun_rot: np.ndarray, light_energy: 
     sun = bpy.data.objects[sun_name]
     sun.location = sun_pos
     sun.rotation_mode = 'QUATERNION'
+    print(f"sun_pos: {sun_pos}")
     sun_quaternion_rot = sun_vectors_to_quaternions(np.array([sun_rot]))[0]
     sun.rotation_quaternion = sun_quaternion_rot
     lamp_data = bpy.data.lights[sun_name]
