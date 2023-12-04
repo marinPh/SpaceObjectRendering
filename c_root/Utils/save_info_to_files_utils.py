@@ -7,7 +7,7 @@ Description: Saves the camera info to a file.
 import os
 import numpy as np
 
-import dataset_constants as dc
+import Utils.dataset_constants as dc
 
 def save_camera_info_to_file(output_directory : str,
                              fov : int = dc.camera_fov, 

@@ -349,9 +349,9 @@ if main_obj := bpy.data.objects[main_obj_name]:
     main_obj.rotation_quaternion = (1, 0, 0, 0)
     main_obj.scale = (1, 1, 1)
 
-    # !!!! if you use scale an object in blender, you have to apply the scale before you can use the scale in the script
+    # !!!! if you use scale an object in blender GUI, you have to apply the scale before you can use the script
     #uncomment the following line if you want to scale the object and replace the 0.001 with the scale factor
-    #scale_all_children(0.001, main_obj)   
+    scale_all_children(0.001, main_obj)   
     # Apply all transformations and scales before continuing this is to avoid any issues when calculating the inertia matrix
 
     apply_all_transforms(main_obj)

@@ -48,7 +48,7 @@ else:
 blend_file_path = os.path.join(proj_dir, "objects", "blend", f"{main_obj_name}.blend")
 
 # TODO check if this does the right motion ID
-motion_id = main_obj_name.split('_')[0] + pose_id
+motion_id = main_obj_name.split('_')[0] +"_"+ pose_id
 
 # Path for the file that contains the position and orientation data
 motions_path = os.path.join(input_directory, motion_id, dc.scene_gt_file_name)
@@ -84,6 +84,7 @@ def apply_blender_animation(objects_dict: dict[str, str],
                             light_energy: float,
                             nb_im: int | None) -> int:
     # Import motion and sun data 
+    print("Motion path:", motions_path)
     motion_quat, trans_vec, objects_ids = motion_and_translation_import(motions_path, list(objects_dict.keys()),
                                                                         num_cols_per_object)
 
@@ -241,7 +242,8 @@ def init_objects(objects_dict: dict[str, str], object_ids: list[str]):
     for obj in bpy.data.objects:
         obj.animation_data_clear()
         obj.constraints.clear()
-
+    
+    
     id = main_obj_name.split("_")[0]
     print(f"Initializing object {id}")
     print(f"keys: {objects_dict.keys()}")

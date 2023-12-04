@@ -131,9 +131,7 @@ print("Inaccuracy with diagonalization using eigenvectors: {:6.2f}\n".format(ina
 output_file_name_with_object = f"{object_name}_{output_file_name}"
 output_file_path = os.path.join(output_directory, output_file_name_with_object)
 with open(os.path.join(output_directory,output_file_name), 'w') as output_file:
-    output_file.write(f"Original inertia matrix for object '{object_name}':\n")
-    output_file.write(print_matrix(inertia_matrix) + "\n\n")
-
+    output_file.write(f"Object name: {object_name}\n\n")
     output_file.write(
         f"Total combined inertia matrix for object '{object_name}' (zeroing out all non-diagonal components):\n"
     )

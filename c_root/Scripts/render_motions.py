@@ -55,7 +55,8 @@ first_motion_id: str = pose_id
 # Number of motions to render
 nb_motions: int = 1
 # List of motions to render
-motion_ids: list[str] = [f"{group_id}{str(i + int(first_motion_id)).zfill(3)}" for i in range(nb_motions)]
+motion_ids: list[str] = [f"{group_id}_{pose_id}"]
+print(f"motion_ids={motion_ids}")
 
 # Number of images to render (set to None for rendering all images from motion).
 # Otherwise, renders the first nb_im images.
@@ -69,11 +70,17 @@ render_animation: bool = True
 def log_render(mess):
     with open(os.path.join(output_directory, "log_render.txt"), "a") as log_file:
         log_file.write(f"{mess}\n")
+def passIndex_correction(parent):
+    parent.pass_index = 1
+    for child in parent.children:
+        child.pass_index = 1
+        passIndex_correction(child)
 def main() -> None:
     
     init_log_file(output_directory, motion_ids, dc.progress_log_file_name)
     
     for motion in motion_ids:
+        print(motion)
         motions_path = os.path.join(input_directory, motion, dc.scene_gt_file_name)
         info_path = os.path.join(input_directory, motion, dc.scene_info_file_name)
         sun_path = os.path.join(input_directory, motion, dc.sun_orientations_file_name)
@@ -93,7 +100,7 @@ def main() -> None:
         log_render(f"light_energy={dc.light_energy}")
         log_render(f"nb_im={nb_im}")
         
-
+        print(f"-------->{motions_path}")
         nb_frames = apply_blender_animation(motions_path=motions_path, 
                                 sun_path=sun_path,
                                 info_path=info_path,
@@ -107,19 +114,20 @@ def main() -> None:
                                 light_rot=dc.light_default_direction,
                                 light_energy=dc.light_energy,
                                 nb_im=nb_im)
+        passIndex_correction(bpy.context.scene.objects[main_obj_name])
         
         # Get the nodes in the compositing tree
         nodes = bpy.context.scene.node_tree.nodes 
-        if dc.mask_node_name not in nodes or dc.seg_node_name not in nodes:
-            raise KeyError("No mask or segmentation node found in the compositing tree")
+        if dc.mask_node_name not in nodes:
+            raise KeyError("No mask node found in the compositing tree")
         # set nb of samples
         bpy.context.scene.cycles.samples = 32
-        
+        print(f"-------->{bpy.context.scene.objects}")
         mask_node = nodes[dc.mask_node_name]
-        seg_node = nodes[dc.seg_node_name]
-        
+     
+        #get the index of objects in the scene
+  
         mask_node.base_path = os.path.join(output_directory, motion, dc.mask_folder_name)
-        seg_node.base_path = os.path.join(output_directory, motion, dc.segmentation_folder_name)
         bpy.context.scene.render.filepath = os.path.join(output_directory, motion, dc.render_folder_name) 
         
         bpy.context.scene.frame_start = 0 

@@ -9,7 +9,7 @@ if [ $# -ge 2 ]; then
 fi
 
 echo "starting imports"
-blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/Utils/import_modules.py"
+#blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/Utils/import_modules.py"
 
 echo "compililing constants"
 blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/Utils/dataset_constants.py"
