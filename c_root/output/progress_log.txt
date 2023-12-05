@@ -1,5 +1,4 @@
 Motion ids to render:
-6_0 
+6_01 
 
 Rendered motions:
-6_0

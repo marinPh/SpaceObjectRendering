@@ -8,38 +8,65 @@ import numpy as np
 import os
 import math
 from pyquaternion import Quaternion
+import re
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
+import random as rand
 from Utils.save_info_to_files_utils import save_camera_info_to_file
 import Utils.dataset_constants as dc
 
 ################################################
 # User-defined inputs
+#get object_id and pose_id from command line
+pose_id = int(sys.argv[-1])
+object_name = sys.argv[-2]
+
 
 # Output directory
-output_directory : str = "/Users/yassinechami/BachProj/02"
 
 # Number of poses to generate
 num_poses : int = dc.val_num_poses
 
 # ID of the object to be rendered
-object_id : str = "02"
+object_id : str = object_name.split("_")[0]
 
 # Whether the sun orientation is randomly generated or not
 sun_rnd_generated : bool = True
+output_directory : str = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"input", f"{object_id}_0{pose_id}")
+
 
 ################################################
 # Object properties
 
 #bbox of current object
-bbox = dc.object_bounding_boxes[object_id]
+def extract_corners(file_path):
+    with open(file_path, 'r') as file:
+        content = file.read()
+
+    # Regular expressions to extract relevant information
+    min_corner_pattern = re.compile(r"Min corner \(x, y, z\): \[([-0-9.]+), ([-0-9.]+), ([-0-9.]+)\]")
+    max_corner_pattern = re.compile(r"Max corner \(x, y, z\): \[([-0-9.]+), ([-0-9.]+), ([-0-9.]+)\]")
+
+    # Find matches using regular expressions
+    min_corner_match = min_corner_pattern.search(content)
+    max_corner_match = max_corner_pattern.search(content)
+
+    if min_corner_match and max_corner_match:
+        # Extract values from the matches
+        min_corner_values = [float(min_corner_match.group(i)) for i in range(1, 4)]
+        max_corner_values = [float(max_corner_match.group(i)) for i in range(1, 4)]
+
+        return min_corner_values, max_corner_values
+    else:
+        raise ValueError("Could not find min and max corners in the file.")
+        
 #size of current object
-size = np.abs(bbox[1] - bbox[0])
+mincorner,maxcorner = extract_corners(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"objects","inertia", f"{object_name}_info.txt"))
+size = np.abs(np.array(maxcorner) - np.array(mincorner))
 
 output_directory = (
-    os.path.join(output_directory, object_id + dc.random_poses_motion_id)
+    output_directory
 )
 
 #min and max object-camera distance, based on  the size of the object
@@ -125,20 +152,15 @@ def generate_points_in_frustum(num_points : int, max_dist : float, min_dist : fl
     num_generated_points = 0
 
     while len(inside_points) < num_points:
-        x = np.random.uniform(-half_base_size, half_base_size)
-        y = np.random.uniform(-half_base_size, half_base_size)
-        z = np.random.uniform(min_dist, max_dist)
+        
+        z = rand.uniform(min_distance,max_distance)
+        x = rand.uniform((-1)*(math.sin(math.radians(fov/2)))*z,(math.sin(math.radians(fov/2)))*z)
+        y = rand.uniform((-1)*(math.sin(math.radians(fov/2)))*z,(math.sin(math.radians(fov/2)))*z)
         point = np.array([x + origin[0], y + origin[1], z + origin[2]])
         
         # Check if the point is inside the frustum
-        point_height = z
-        frustum_height = max_dist
-        frustum_ratio = point_height / frustum_height
-        half_point_base_size = half_base_size * frustum_ratio
-
-        if -half_point_base_size <= x <= half_point_base_size and -half_point_base_size <= y <= half_point_base_size:
-            inside_points.append(point)
-            num_generated_points += 1
+        inside_points.append(point)
+        num_generated_points += 1
             
     return np.array(inside_points)
 
