@@ -29,7 +29,7 @@ def scale_all_children(scale_factor: float, object):
         object (bpy.types.Object): Object
     """
     for child in object.children:
-        child.scale *= scale_factor
+        child.scale = (scale_factor, scale_factor, scale_factor)
         scale_all_children(scale_factor, child)
     
 
@@ -350,8 +350,12 @@ if main_obj := bpy.data.objects[main_obj_name]:
     main_obj.scale = (1, 1, 1)
 
     # !!!! if you use scale an object in blender GUI, you have to apply the scale before you can use the script
-    #uncomment the following line if you want to scale the object and replace the 0.001 with the scale factor
-    scale_all_children(0.001, main_obj)   
+    #main_obj.scale = (0.001, 0.001, 0.001)
+    if main_obj.scale != (1, 1, 1):
+        print(main_obj.scale)
+        print("WARNING: The object has been scaled. Please apply the scale before running the script!\n")
+        print(f"Scaling object '{main_obj_name}' by {main_obj.scale[0]}...\n")
+        scale_all_children(main_obj.scale[0], main_obj)   
     # Apply all transformations and scales before continuing this is to avoid any issues when calculating the inertia matrix
 
     apply_all_transforms(main_obj)

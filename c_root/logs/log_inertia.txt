@@ -2,9 +2,6 @@
 
 init file:
 apply_all_trans
-<bpy_struct, Object("7_SM_MMO") at 0x7f5bd1fa1a08>
-apply_all_trans
-<bpy_struct, Object("SM_MMO") at 0x7f5ba2cd3c08>
-traverse
+<bpy_struct, Object("7_SM_MMO") at 0x7fec8e183e08>
 traverse
 create_bmesh_objects

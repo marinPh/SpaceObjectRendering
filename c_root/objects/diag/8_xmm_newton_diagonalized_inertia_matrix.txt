@@ -1,0 +1,22 @@
+Object name: 8_xmm_newton
+
+Total combined inertia matrix for object '8_xmm_newton' (zeroing out all non-diagonal components):
+np.array([
+    [565.09,   0.00,   0.00],
+    [  0.00, 819.74,   0.00],
+    [  0.00,   0.00, 330.74]
+])
+
+Zeroing out non-diagonal components Inaccuracy:  24.97
+
+Total combined inertia matrix for object '8_xmm_newton' (using eigenvectors):
+np.array([
+    [565.13,   0.00,   0.00],
+    [  0.00, 330.08,   0.00],
+    [  0.00,   0.00, 820.36]
+])
+
+Diagonalization using eigenvectors Inaccuracy: 692.90
+Diagonalization using eigenvectors Rotation applied (in degrees): [179.99,   0.69,  -0.66]
+
+The inaccuracy is the Frobenius norm (like a Euclidean distance) between the original matrix and the matrix after diagonalization.

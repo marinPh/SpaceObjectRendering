@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '5_MTM':
+np.array([
+    [ 8781.63, -11.23,  141.65],
+    [-11.23,  517751.23,  145.49],
+    [ 141.65,  145.49,  521216.31]])

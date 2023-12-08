@@ -1,0 +1,11 @@
+Information for object '5_MTM':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 30.00 m, 3.46 m, 2.34 m
+Center of Mass (x, y, z): [-0.02, 0.17, 0.32]
+
+Bounding box:
+    Min corner (x, y, z): [-15.0000, -1.7483, -1.0435]
+    Max corner (x, y, z): [15.0000, 1.7100, 1.2988]
+
+Number of samples for inertia matrix: 100000
