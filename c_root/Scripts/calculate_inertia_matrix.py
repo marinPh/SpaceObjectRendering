@@ -11,12 +11,13 @@ import bpy
 import numpy as np
 import os
 from mathutils import Vector
+import pymeshlab
 #import plotly
 #import plotly.graph_objs as gFo
 #import plotly.offline as pyo
 from tqdm import tqdm
-import bmesh
-from mathutils.bvhtree import BVHTree
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))    
+from Utils import save_info_to_files_utils as utils
 
 ################################################
 # User-defined inputs
@@ -34,15 +35,10 @@ def scale_all_children(scale_factor: float, object):
     
 
 # Name of the main object
-if len(sys.argv) < 2:
-    print("Usage: python calculate_inertia_matrix.py <arg1>")
-    sys.exit(1)
+arg1 = sys.argv[sys.argv.index("--") + 1]
 
-# Access the argument passed in the command line
-arg1 = sys.argv[1]
-print("Argument 1:", arg1)
 
-main_obj_name = arg1.split("/")[3].split(".")[0]
+main_obj_name = arg1
 # Total mass of the entire system (kg)
 
 
@@ -104,13 +100,12 @@ def init_log_file(log_dir: str, log_file_name: str) -> None:
 init_log_file(os.path.join(proj_dir,"logs"),log_file_name)
 def apply_all_transforms(obj):
     log_inertia("apply_all_trans")
-    print(f"{bpy.context.view_layer.objects.active} is active object")
-    print(f"{obj.children} the children of {obj.name}")
+   
 
     log_inertia(obj)
     bpy.context.view_layer.objects.active = obj
     obj.select_set(True)
-    print(f"{obj.name} is active object")
+   
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True) 
     obj.select_set(False)
     for child in obj.children:
@@ -156,7 +151,7 @@ def combined_bbox(mesh_objects):
     max_corner = np.zeros(3)
     for i, obj in enumerate(mesh_objects):
         bbox = [Vector(corner) for corner in obj.bound_box]
-        print(f"bbox:{i} {obj.dimensions} of {obj.name}")
+        
         if i == 0:
             min_corner = np.array(
                 [
@@ -205,59 +200,88 @@ def point_is_inside_tree(point, bvh_tree):
         while hit is not None:
             intersections += 1
             hit, _, _, _ = bvh_tree.ray_cast(hit + ray_direction * 1e-4, ray_direction)
+           
 
         # If the ray intersects the object an odd number of times, the point is inside the object
         is_inside = is_inside and intersections % 2 == 1
+       
+
     return is_inside
 
 # Function that calculates the aggregate inertia matrix and approximate center of mass of a system of mesh objects
-def calculate_combined_inertia_matrix_and_approx_com(mesh_objects, total_mass, num_samples):
+def calculate_combined_inertia_matrix_and_approx_com(mesh_objects, total_mass, num_samples,object_name):
     I_local = np.zeros((3, 3))
     global_approx_com = np.zeros(3)
 
-    all_inside_points = []
+    parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    sys.path.append(parent_dir)
 
-    min_corner, max_corner = combined_bbox(mesh_objects)
+    output_directory = os.path.join(parent_dir, "output","test")
+    object_path = os.path.join(parent_dir,"objects")
 
-    bvh_trees = create_bvh_trees(create_bmesh_objects(mesh_objects))
+  
 
-    num_inside_points = 0
+    #get the object from blend file
+    file = bpy.ops.wm.open_mainfile(filepath=os.path.join(object_path,"blend",object_name+".blend"))
+    #export in obj format
+    #select object to export
+    bpy.ops.object.select_all(action='DESELECT')
+    #select object and its hierarchy
+    bpy.data.objects[object_name].select_set(True)
+    #set object as active
+    bpy.context.view_layer.objects.active = bpy.data.objects[object_name]
+    bpy.ops.object.select_hierarchy(direction='CHILD', extend=True)
 
-    print("\nSampling points...\n")
-    print(f"min_corner: {min_corner}, max_corner: {max_corner}")
 
-    with tqdm(total=num_samples) as progress_bar:
-        while num_inside_points < num_samples:
-            point = random_point_in_bbox(min_corner, max_corner)
-            for obj in bvh_trees:
-                if point_is_inside_tree(point, obj):
-                    num_inside_points += 1
-                    global_approx_com += point
-                    all_inside_points.append(point)
-                    colorful_progress_bar(num_inside_points, num_samples)
-                    break
-                
-            progress_bar.update(num_inside_points - progress_bar.n)
+    #export
+    obj_path = os.path.join(object_path,"obj")
+    if not os.path.exists(obj_path):
+        os.mkdir(obj_path)
 
-    global_approx_com /= num_inside_points
+
+
+    bpy.ops.export_scene.obj(filepath =os.path.join(obj_path,f"{object_name}.obj"), use_selection=True)
+
+    #create mesh
+    ms = pymeshlab.MeshSet()
+    ms.load_new_mesh(os.path.join(obj_path,f"{object_name}.obj"))
+    #create cloud of points of mesh using montecarlo sampling
+    ms.apply_filter('generate_sampling_montecarlo', samplenum=100000)
+    #save cloud of points in csv file
+    csv_path = os.path.join(object_path,"csv")
+    if not os.path.exists(csv_path):
+        os.mkdir(csv_path)
+
+    vertices = ms.current_mesh().vertex_matrix()
+    np.savetxt(os.path.join(csv_path,object_name+".csv"), vertices, delimiter=",", header="x,y,z", comments='')
+    num_inside_points = vertices.shape[0]
+#get the cloud of points into a numpy array
+
+    global_approx_com = np.mean(vertices, axis=0)
+    html_path = os.path.join(object_path,"html")
+    if not os.path.exists(html_path):
+        os.mkdir(html_path)
+    utils.create_html_from_inside_points(vertices,object_name,html_path)
 
     print("\nCalculating inertia matrix...\n")
 
-    for point in all_inside_points:
-        x, y, z = point - global_approx_com # If the center of mass is not the origin, we have to subtract the global_approx_com
-        I_local[0, 0] += (y**2 + z**2)
-        I_local[1, 1] += (x**2 + z**2)
-        I_local[2, 2] += (x**2 + y**2)
-        I_local[0, 1] -= x*y
-        I_local[1, 0] -= x*y
-        I_local[0, 2] -= x*z
-        I_local[2, 0] -= x*z
-        I_local[1, 2] -= y*z
-        I_local[2, 1] -= y*z
+    shifted_vertices = vertices - global_approx_com
+
+    # Extract individual coordinates
+    x, y, z = shifted_vertices[:, 0], shifted_vertices[:, 1], shifted_vertices[:, 2]
+   
+    # Calculate the contributions to the inertia matrix
+    I_local = np.zeros((3, 3))
+    I_local[0, 0] = np.sum(y**2 + z**2)
+    I_local[1, 1] = np.sum(x**2 + z**2)
+    I_local[2, 2] = np.sum(x**2 + y**2)
+    I_local[0, 1] = I_local[1, 0] = -np.sum(x*y)
+    I_local[0, 2] = I_local[2, 0] = -np.sum(x*z)
+    I_local[1, 2] = I_local[2, 1] = -np.sum(y*z)
 
     I_local *= total_mass / num_inside_points
 
-    return I_local, global_approx_com, all_inside_points
+    return I_local, global_approx_com, vertices
 
 # Function that prints a matrix in a nice format
 def print_formatted_matrix(matrix):
@@ -289,42 +313,6 @@ def save_info_to_file(file_path, bbox, size, mass, num_samples, global_approx_co
         f.write(f"\nNumber of samples for inertia matrix: {num_samples}\n")
 
 # Function that creates an HTML file with a 3D scatter plot of the points inside the object
-"""def create_html_from_inside_points(all_inside_points, main_obj_name, output_directory):
-    # Generate the 3D scatter plot
-    x = [point[0] for point in all_inside_points]
-    y = [point[1] for point in all_inside_points]
-    z = [point[2] for point in all_inside_points]
-
-    trace = go.Scatter3d(x=x, y=y, z=z, mode='markers', marker=dict(size=2, color='rgb(0, 0, 255)'))
-    data = [trace]
-
-    # Find the largest range among x, y, and z
-    range_x = max(x) - min(x)
-    range_y = max(y) - min(y)
-    range_z = max(z) - min(z)
-    max_range = max(range_x, range_y, range_z)
-
-     #Calculate aspect ratios for each axis
-    aspect_ratio_x = range_x / max_range
-    aspect_ratio_y = range_y / max_range
-    aspect_ratio_z = range_z / max_range
-
-    layout = go.Layout(title=f"Inside Points for '{main_obj_name}'",
-                    scene=dict(xaxis_title='X',
-                                yaxis_title='Y',
-                                zaxis_title='Z',
-                                aspectmode='data',
-                                aspectratio=dict(x=aspect_ratio_x,
-                                                y=aspect_ratio_y,
-                                                z=aspect_ratio_z)
-                                )
-                    )
-
-    #fig = go.Figure(data=data, layout=layout)
-
-    # Save the scatter plot to an HTML file
-    #output_file_path_plot = os.path.join(output_directory, f"{main_obj_name}_inside_points.html")
-    #pyo.plot(fig, filename=output_file_path_plot, auto_open=False)"""
 
 
 # Get a reference to the main object
@@ -335,29 +323,28 @@ bpy.ops.wm.open_mainfile(filepath=blend_file_path)
 
 
 print("looking for main object")
-print(f"{main_obj_name} this is the name")
-print(bpy.data.objects.keys())
+
+
 
 if main_obj := bpy.data.objects[main_obj_name]:
     print("main_object found")
-    print(f"{type(main_obj)} is main object type")
-    print(f"{type(bpy.context.view_layer.objects.active)} is active object type")
+  
 
     # Make sure the object is at the origin, has no rotation and no scale
     main_obj.location = (0, 0, 0)
     main_obj.rotation_mode = 'QUATERNION'
     main_obj.rotation_quaternion = (1, 0, 0, 0)
-    main_obj.scale = (1, 1, 1)
+    
 
     # !!!! if you use scale an object in blender GUI, you have to apply the scale before you can use the script
     #main_obj.scale = (0.001, 0.001, 0.001)
     if main_obj.scale != (1, 1, 1):
-        print(main_obj.scale)
+        print(f"main_obj.scale: {main_obj.scale}")
         print("WARNING: The object has been scaled. Please apply the scale before running the script!\n")
         print(f"Scaling object '{main_obj_name}' by {main_obj.scale[0]}...\n")
-        scale_all_children(main_obj.scale[0], main_obj)   
+        #scale_all_children(main_obj.scale[0], main_obj)   
     # Apply all transformations and scales before continuing this is to avoid any issues when calculating the inertia matrix
-
+    #main_obj.scale = (1, 1, 1)
     apply_all_transforms(main_obj)
 
     # Traverse hierarchy and find all mesh objects
@@ -370,7 +357,7 @@ if main_obj := bpy.data.objects[main_obj_name]:
     size = bbox[1] - bbox[0]  # size = max_corner - min_corner
 
     # Calculate the combined inertia matrix and approximate center of mass
-    combined_inertia_matrix, global_approx_com, all_inside_points = calculate_combined_inertia_matrix_and_approx_com(mesh_objects, total_mass, num_samples)
+    combined_inertia_matrix, global_approx_com, all_inside_points = calculate_combined_inertia_matrix_and_approx_com(mesh_objects, total_mass, num_samples,main_obj_name)
 
     # Print the results
     print("Global approximate center of mass: [{:.4f}, {:.4f}, {:.4f}]\n".format(global_approx_com[0], global_approx_com[1], global_approx_com[2]))

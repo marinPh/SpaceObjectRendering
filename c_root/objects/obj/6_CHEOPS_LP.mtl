@@ -1,0 +1,343 @@
+# Blender MTL File: '6_CHEOPS_LP.blend'
+# Material Count: 31
+
+newmtl 2_cuadrados
+Ns 7.000004
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.400000 0.400000 0.400000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl Body
+Ns 4.455450
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture2.jpg
+map_Ns C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture2.jpg
+
+newmtl Body.001
+Ns 4.455450
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture2.jpg
+map_Ns C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture2.jpg
+
+newmtl Body.002
+Ns 4.455450
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture2.jpg
+map_Ns C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture2.jpg
+
+newmtl Body.003
+Ns 4.455450
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture2.jpg
+map_Ns C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture2.jpg
+
+newmtl Body.004
+Ns 4.455450
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture2.jpg
+map_Ns C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture2.jpg
+
+newmtl Body.005
+Ns 4.455450
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture2.jpg
+map_Ns C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture2.jpg
+
+newmtl Body2
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.964823 0.956278 0.956278
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture1.jpg
+
+newmtl Default
+Ns 7.000004
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.400000 0.400000 0.400000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture4.jpg
+
+newmtl Tapa-tubo
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.964823 0.964823
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture4.jpg
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture4.jpg
+
+newmtl Tapa-tubo.001
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.964823 0.964823
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture4.jpg
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture4.jpg
+
+newmtl Tapa-tubo.002
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.964823 0.964823
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture4.jpg
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture4.jpg
+
+newmtl Tapa-tubo.003
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.964823 0.964823
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture4.jpg
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture4.jpg
+
+newmtl Tapa-tubo.004
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.964823 0.964823
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture4.jpg
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture4.jpg
+
+newmtl base
+Ns 2.772277
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/MappedTexture3.jpg
+
+newmtl fondo-objetivo
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.002116 0.002067 0.002067
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+
+newmtl fondo-objetivo.001
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.002116 0.002067 0.002067
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+
+newmtl solarpanels
+Ns 4.999997
+Ka 1.000000 1.000000 1.000000
+Kd 0.973548 0.939322 0.939322
+Ks 0.023308 0.023308 0.023308
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/SolarPanels_FrontBackSides.jpg
+
+newmtl solarpanels.001
+Ns 4.999997
+Ka 1.000000 1.000000 1.000000
+Kd 0.973548 0.939322 0.939322
+Ks 0.023308 0.023308 0.023308
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/SolarPanels_FrontBackSides.jpg
+
+newmtl solarpanels.002
+Ns 4.999997
+Ka 1.000000 1.000000 1.000000
+Kd 0.973548 0.939322 0.939322
+Ks 0.023308 0.023308 0.023308
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/SolarPanels_FrontBackSides.jpg
+
+newmtl solarpanels.003
+Ns 4.999997
+Ka 1.000000 1.000000 1.000000
+Kd 0.973548 0.939322 0.939322
+Ks 0.023308 0.023308 0.023308
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/SolarPanels_FrontBackSides.jpg
+
+newmtl solarpanels.004
+Ns 4.999997
+Ka 1.000000 1.000000 1.000000
+Kd 0.973548 0.939322 0.939322
+Ks 0.023308 0.023308 0.023308
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/SolarPanels_FrontBackSides.jpg
+
+newmtl solarpanels.005
+Ns 4.999997
+Ka 1.000000 1.000000 1.000000
+Kd 0.973548 0.939322 0.939322
+Ks 0.023308 0.023308 0.023308
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/Users/Users/Monica/Desktop/1-ideorum/3-7Scifleet/CHEOPS project 26Nov2019/CHEOPS_Textures copie/SolarPanels_FrontBackSides.jpg
+
+newmtl tornillos
+Ns 199.999995
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl tornillos.001
+Ns 199.999995
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl tornillos.002
+Ns 199.999995
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl tornillos.003
+Ns 199.999995
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl tornillos.004
+Ns 199.999995
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl tornillos.005
+Ns 199.999995
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl tornillos.006
+Ns 199.999995
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl tornillos.007
+Ns 199.999995
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3

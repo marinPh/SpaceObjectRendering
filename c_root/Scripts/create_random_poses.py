@@ -8,86 +8,60 @@ import numpy as np
 import os
 import math
 from pyquaternion import Quaternion
-import re
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import random as rand
+
 from Utils.save_info_to_files_utils import save_camera_info_to_file
 import Utils.dataset_constants as dc
 
 ################################################
 # User-defined inputs
-#get object_id and pose_id from command line
-pose_id = int(sys.argv[-1])
-object_name = sys.argv[-2]
-
 
 # Output directory
+output_directory : str = "/Users/yassinechami/BachProj/02"
 
 # Number of poses to generate
-num_poses : int = dc.val_num_poses
+num_poses : int = 20
 
 # ID of the object to be rendered
-object_id : str = object_name.split("_")[0]
+object_id : str = "02"
 
 # Whether the sun orientation is randomly generated or not
 sun_rnd_generated : bool = True
-output_directory : str = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"input", f"{object_id}_0{pose_id}")
-
 
 ################################################
 # Object properties
 
 #bbox of current object
-def extract_corners(file_path):
-    with open(file_path, 'r') as file:
-        content = file.read()
-
-    # Regular expressions to extract relevant information
-    min_corner_pattern = re.compile(r"Min corner \(x, y, z\): \[([-0-9.]+), ([-0-9.]+), ([-0-9.]+)\]")
-    max_corner_pattern = re.compile(r"Max corner \(x, y, z\): \[([-0-9.]+), ([-0-9.]+), ([-0-9.]+)\]")
-
-    # Find matches using regular expressions
-    min_corner_match = min_corner_pattern.search(content)
-    max_corner_match = max_corner_pattern.search(content)
-
-    if min_corner_match and max_corner_match:
-        # Extract values from the matches
-        min_corner_values = [float(min_corner_match.group(i)) for i in range(1, 4)]
-        max_corner_values = [float(max_corner_match.group(i)) for i in range(1, 4)]
-
-        return min_corner_values, max_corner_values
-    else:
-        raise ValueError("Could not find min and max corners in the file.")
-        
+bbox = dc.object_bounding_boxes[object_id]
 #size of current object
-mincorner,maxcorner = extract_corners(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"objects","inertia", f"{object_name}_info.txt"))
-size = np.abs(np.array(maxcorner) - np.array(mincorner))
+size = np.abs(bbox[1] - bbox[0])
+effective_size = np.mean(size)
 
 output_directory = (
-    output_directory
+    os.path.join(output_directory, object_id + dc.random_poses_motion_id)
 )
 
 #min and max object-camera distance, based on  the size of the object
 
-def calculate_distance_with_fov(object_size, fov_degrees, image_dimension, coverage_ratio):
+def calculate_distance_with_fov(effective_size, fov_degrees, image_dimension, coverage_ratio):
     """
     Calculates the distance from the camera to the object based on the desired coverage ratio of the image,
     assuming a typical camera field of view.
     """
     fov_radians = math.radians(fov_degrees)
-    max_object_dimension = max(object_size)
     covered_image_dimension = coverage_ratio * image_dimension
-    distance = (max_object_dimension / 2) / math.tan(fov_radians / 2)
+    distance = (effective_size / 2) / math.tan(fov_radians / 2)
     adjusted_distance = distance * (image_dimension / covered_image_dimension)
     return adjusted_distance
 
 #min object-camera distance
-min_distance = calculate_distance_with_fov(size, dc.camera_fov, 1024, 0.25 ** 0.5)
+min_distance = calculate_distance_with_fov(effective_size, dc.camera_fov, 1024, 0.25 ** 0.5)
 
 #max object-camera distance
-max_distance = calculate_distance_with_fov(size, dc.camera_fov, 1024, 0.15 ** 0.5)
+max_distance = calculate_distance_with_fov(effective_size, dc.camera_fov, 1024, 0.15 ** 0.5)
+
 
 def generate_random_poses(num_poses, object_id, output_directory, sun_rnd_generated, num_frustums, min_distance, max_distance, fov, camera_position, camera_direction, scene_info_file_name, sun_orientations_file_name, scene_gt_file_name, camera_info_file_name):
     """
@@ -111,7 +85,7 @@ def generate_random_poses(num_poses, object_id, output_directory, sun_rnd_genera
     save_vals_to_file(output_directory, scene_gt_file_name, positions, rotations, object_id)
 
     # Save the initial inputs to a separate file
-    save_rnd_gen_gt_info_to_file(output_directory, object_id, num_poses, sun_rnd_generated, min_distance, max_distance, dc.nb_layers, dc.light_energy, dc.sun_orientations_file_name, dc.scene_info_file_name, dc.random_poses_motion_id)
+    save_rnd_gen_gt_info_to_file(output_directory, object_id, num_poses, sun_rnd_generated, min_distance, max_distance, dc.nb_layers, 100, dc.sun_orientations_file_name, dc.scene_info_file_name, dc.random_poses_motion_id)
 
     
 def generate_non_uniform_poses(num_frustums : int, num_points : int, max_dist : float, min_dist : float, 
@@ -152,15 +126,20 @@ def generate_points_in_frustum(num_points : int, max_dist : float, min_dist : fl
     num_generated_points = 0
 
     while len(inside_points) < num_points:
-        
-        z = rand.uniform(min_distance,max_distance)
-        x = rand.uniform((-1)*(math.sin(math.radians(fov/2)))*z,(math.sin(math.radians(fov/2)))*z)
-        y = rand.uniform((-1)*(math.sin(math.radians(fov/2)))*z,(math.sin(math.radians(fov/2)))*z)
+        x = np.random.uniform(-half_base_size, half_base_size)
+        y = np.random.uniform(-half_base_size, half_base_size)
+        z = np.random.uniform(min_dist, max_dist)
         point = np.array([x + origin[0], y + origin[1], z + origin[2]])
         
         # Check if the point is inside the frustum
-        inside_points.append(point)
-        num_generated_points += 1
+        point_height = z
+        frustum_height = max_dist
+        frustum_ratio = point_height / frustum_height
+        half_point_base_size = half_base_size * frustum_ratio
+
+        if -half_point_base_size <= x <= half_point_base_size and -half_point_base_size <= y <= half_point_base_size:
+            inside_points.append(point)
+            num_generated_points += 1
             
     return np.array(inside_points)
 
@@ -180,7 +159,7 @@ def save_rnd_gen_gt_info_to_file(output_directory : str, group_id: str, num_pose
                                  min_distance : float, 
                                  max_distance : float, 
                                  num_frustums : int = dc.nb_layers,  
-                                 sun_energy : float = dc.light_energy, 
+                                 sun_energy : float = 100, 
                                  sun_dirs_file : str = dc.sun_orientations_file_name, 
                                  scene_info_file_name : str = dc.scene_info_file_name, 
                                  rnd_gen_mt_id : str = dc.random_poses_motion_id) -> None:
