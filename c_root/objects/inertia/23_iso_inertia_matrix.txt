@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '23_iso':
+np.array([
+    [ 27376.90,  66.17,  127.14],
+    [ 66.17,  9009.75, -2739.33],
+    [ 127.14, -2739.33,  27277.34]])

@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '7_SM_MMO':
+np.array([
+    [ 1060.60, -164.21, -0.46],
+    [-164.21,  788.35, -1.49],
+    [-0.46, -1.49,  1811.33]])

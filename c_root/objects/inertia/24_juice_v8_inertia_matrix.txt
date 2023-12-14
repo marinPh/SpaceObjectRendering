@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '24_juice_v8':
+np.array([
+    [ 1128.04,  8.34, -1.18],
+    [ 8.34,  1089.57,  0.65],
+    [-1.18,  0.65,  74.34]])

@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '13_cassini_huygens':
+np.array([
+    [ 128.16,  13.09, -1.60],
+    [ 13.09,  67.98,  0.68],
+    [-1.60,  0.68,  160.31]])

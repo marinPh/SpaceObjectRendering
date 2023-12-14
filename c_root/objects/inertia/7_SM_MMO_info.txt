@@ -1,0 +1,11 @@
+Information for object '7_SM_MMO':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 2.91 m, 0.26 m, 2.87 m
+Center of Mass (x, y, z): [0.00, 0.00, -0.07]
+
+Bounding box:
+    Min corner (x, y, z): [-1.4558, -0.0227, -1.4350]
+    Max corner (x, y, z): [1.4558, 0.2386, 1.4350]
+
+Number of samples for inertia matrix: 100000

@@ -1,0 +1,11 @@
+Information for object '13_cassini_huygens':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 0.45 m, 0.51 m, 0.70 m
+Center of Mass (x, y, z): [0.01, -0.03, -0.00]
+
+Bounding box:
+    Min corner (x, y, z): [-0.3207, -0.4292, -0.3489]
+    Max corner (x, y, z): [0.1315, 0.0790, 0.3483]
+
+Number of samples for inertia matrix: 100000

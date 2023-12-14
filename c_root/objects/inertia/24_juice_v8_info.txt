@@ -1,0 +1,11 @@
+Information for object '24_juice_v8':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 0.66 m, 0.53 m, 1.20 m
+Center of Mass (x, y, z): [0.01, 0.06, -0.01]
+
+Bounding box:
+    Min corner (x, y, z): [-0.3219, -0.3183, -0.6103]
+    Max corner (x, y, z): [0.3407, 0.2099, 0.5891]
+
+Number of samples for inertia matrix: 100000

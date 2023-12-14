@@ -12,23 +12,35 @@ from pyquaternion import Quaternion
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from Utils.save_info_to_files_utils import save_camera_info_to_file
-import Utils.dataset_constants as dc
+from Utils import save_info_to_files_utils as utils
+from Utils import data_constants as dc
+
+num_poses =100
+sun_rnd_generated : bool = True
 
 ################################################
 # User-defined inputs
 
-# Output directory
-output_directory : str = "/Users/yassinechami/BachProj/02"
+# Name of the output directory
+output_directory = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "input"
+)
 
-# Number of poses to generate
-num_poses : int = 20
+# Object properties
 
-# ID of the object to be rendered
-object_id : str = "02"
+if len(sys.argv) > 2:
+    object_name = sys.argv[-2]
+    tumble_id = sys.argv[-1]
 
-# Whether the sun orientation is randomly generated or not
-sun_rnd_generated : bool = True
+# Object ID
+object_id = object_name.split("_")[0]
+# Tumble ID
+inertia_path = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)),
+    "objects",
+    "diag",
+    f"{object_name}_diagonalized_inertia_matrix.txt",
+)
 
 ################################################
 # Object properties
@@ -79,7 +91,7 @@ def generate_random_poses(num_poses, object_id, output_directory, sun_rnd_genera
         save_sun_orientations_to_file(sun_orientations, output_directory, sun_orientations_file_name)
         
     # Save the camera info to a text file in the specified directory
-    save_camera_info_to_file(output_directory)
+    utils.save_camera_info_to_file(output_directory)
 
     # Save the scene ground truth data to a text file in the specified directory
     save_vals_to_file(output_directory, scene_gt_file_name, positions, rotations, object_id)

@@ -1,0 +1,11 @@
+Information for object '17_exoMars':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 0.23 m, 0.25 m, 0.30 m
+Center of Mass (x, y, z): [0.00, 0.02, -0.02]
+
+Bounding box:
+    Min corner (x, y, z): [-0.1170, -0.0589, -0.1855]
+    Max corner (x, y, z): [0.1170, 0.1898, 0.1131]
+
+Number of samples for inertia matrix: 100000

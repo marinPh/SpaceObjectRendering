@@ -1,0 +1,11 @@
+Information for object '11_bepi_mpo':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 0.76 m, 0.79 m, 0.41 m
+Center of Mass (x, y, z): [-0.13, 0.21, -0.22]
+
+Bounding box:
+    Min corner (x, y, z): [-0.3960, 0.0042, -0.4649]
+    Max corner (x, y, z): [0.3657, 0.7897, -0.0597]
+
+Number of samples for inertia matrix: 100000

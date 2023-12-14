@@ -1,0 +1,11 @@
+Information for object '20_herschel':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 4.01 m, 7.58 m, 3.90 m
+Center of Mass (x, y, z): [-0.04, 0.15, -1.14]
+
+Bounding box:
+    Min corner (x, y, z): [-2.0071, -2.4171, -2.6340]
+    Max corner (x, y, z): [2.0032, 5.1579, 1.2695]
+
+Number of samples for inertia matrix: 100000

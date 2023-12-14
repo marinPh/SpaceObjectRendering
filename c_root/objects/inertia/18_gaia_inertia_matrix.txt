@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '18_gaia':
+np.array([
+    [ 30.92,  0.03,  0.01],
+    [ 0.03,  51.84, -0.24],
+    [ 0.01, -0.24,  30.91]])

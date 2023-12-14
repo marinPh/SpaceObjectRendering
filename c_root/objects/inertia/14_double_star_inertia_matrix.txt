@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '14_double_star':
+np.array([
+    [ 83.28, -1.42, -0.14],
+    [-1.42,  116.79,  0.21],
+    [-0.14,  0.21,  109.59]])

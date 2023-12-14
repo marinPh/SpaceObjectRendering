@@ -1,0 +1,11 @@
+Information for object '14_double_star':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 0.75 m, 0.39 m, 0.21 m
+Center of Mass (x, y, z): [-0.00, -0.00, -0.00]
+
+Bounding box:
+    Min corner (x, y, z): [-0.3807, -0.0976, -0.1071]
+    Max corner (x, y, z): [0.3709, 0.2960, 0.1071]
+
+Number of samples for inertia matrix: 100000

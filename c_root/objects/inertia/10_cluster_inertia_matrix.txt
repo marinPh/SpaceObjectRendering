@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '10_cluster':
+np.array([
+    [ 75489.36, -90.31,  3675.57],
+    [-90.31,  144038.81,  174.88],
+    [ 3675.57,  174.88,  73154.23]])

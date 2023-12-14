@@ -1,0 +1,11 @@
+Information for object '15_edm':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 2.58 m, 1.27 m, 2.58 m
+Center of Mass (x, y, z): [0.04, -0.04, 0.02]
+
+Bounding box:
+    Min corner (x, y, z): [-1.2518, -0.6222, -1.2752]
+    Max corner (x, y, z): [1.3251, 0.6485, 1.3017]
+
+Number of samples for inertia matrix: 100000

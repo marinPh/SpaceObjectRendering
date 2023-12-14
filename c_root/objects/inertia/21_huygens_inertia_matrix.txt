@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '21_huygens':
+np.array([
+    [ 9.27, -0.00,  0.01],
+    [-0.00,  16.99, -0.00],
+    [ 0.01, -0.00,  9.24]])

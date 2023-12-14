@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '17_exoMars':
+np.array([
+    [ 27.65, -0.15,  0.15],
+    [-0.15,  39.34, -1.27],
+    [ 0.15, -1.27,  20.33]])

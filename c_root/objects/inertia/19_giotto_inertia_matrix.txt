@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '19_giotto':
+np.array([
+    [ 2.84, -0.02, -0.00],
+    [-0.02,  2.30, -0.00],
+    [-0.00, -0.00,  2.88]])

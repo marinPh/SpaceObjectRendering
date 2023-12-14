@@ -387,7 +387,7 @@ def f15_tumble_integrator(
 
 def main(output_directory: str, object_id: str):
     # Ensure output_directory exists
-    output_path = os.path.join(output_directory, f"{object_id}{tumble_id}")
+    output_path = os.path.join(output_directory, f"{object_id}_{tumble_id}")
     os.makedirs(output_path, exist_ok=True)
 
     # Creates the positions (P) and quaternions (Q) for an object

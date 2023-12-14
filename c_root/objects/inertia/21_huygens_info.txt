@@ -1,0 +1,11 @@
+Information for object '21_huygens':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 0.11 m, 0.03 m, 0.11 m
+Center of Mass (x, y, z): [0.00, 0.01, -0.00]
+
+Bounding box:
+    Min corner (x, y, z): [-0.0525, 0.0007, -0.0530]
+    Max corner (x, y, z): [0.0532, 0.0334, 0.0528]
+
+Number of samples for inertia matrix: 100000

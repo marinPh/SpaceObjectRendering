@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '15_edm':
+np.array([
+    [ 5745.90,  2.94,  8.18],
+    [ 2.94,  10273.47,  0.65],
+    [ 8.18,  0.65,  5762.20]])

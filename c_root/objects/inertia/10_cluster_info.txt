@@ -1,0 +1,11 @@
+Information for object '10_cluster':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 34.33 m, 4.66 m, 34.33 m
+Center of Mass (x, y, z): [0.00, -0.24, -0.02]
+
+Bounding box:
+    Min corner (x, y, z): [-17.1088, -2.7320, -17.2281]
+    Max corner (x, y, z): [17.2175, 1.9306, 17.0989]
+
+Number of samples for inertia matrix: 100000

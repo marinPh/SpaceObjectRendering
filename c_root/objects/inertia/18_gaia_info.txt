@@ -1,0 +1,11 @@
+Information for object '18_gaia':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 0.20 m, 0.08 m, 0.20 m
+Center of Mass (x, y, z): [0.00, 0.01, -0.00]
+
+Bounding box:
+    Min corner (x, y, z): [-0.0987, -0.0059, -0.0993]
+    Max corner (x, y, z): [0.0987, 0.0733, 0.0981]
+
+Number of samples for inertia matrix: 100000

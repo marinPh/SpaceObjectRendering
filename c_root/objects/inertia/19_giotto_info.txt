@@ -1,0 +1,11 @@
+Information for object '19_giotto':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 0.04 m, 0.06 m, 0.04 m
+Center of Mass (x, y, z): [-0.00, -0.01, 0.04]
+
+Bounding box:
+    Min corner (x, y, z): [-0.0251, -0.0315, 0.0231]
+    Max corner (x, y, z): [0.0186, 0.0315, 0.0629]
+
+Number of samples for inertia matrix: 100000

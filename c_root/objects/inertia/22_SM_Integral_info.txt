@@ -1,0 +1,11 @@
+Information for object '22_SM_Integral':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 0.63 m, 0.20 m, 0.14 m
+Center of Mass (x, y, z): [0.00, -0.03, -0.01]
+
+Bounding box:
+    Min corner (x, y, z): [-0.3148, -0.0996, -0.0718]
+    Max corner (x, y, z): [0.3148, 0.0996, 0.0718]
+
+Number of samples for inertia matrix: 100000

@@ -1,0 +1,11 @@
+Information for object '23_iso':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 2.36 m, 5.32 m, 2.11 m
+Center of Mass (x, y, z): [-0.43, -0.12, 0.30]
+
+Bounding box:
+    Min corner (x, y, z): [-1.6213, -2.0780, -1.0381]
+    Max corner (x, y, z): [0.7433, 3.2414, 1.0739]
+
+Number of samples for inertia matrix: 100000

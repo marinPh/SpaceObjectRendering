@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '22_SM_Integral':
+np.array([
+    [ 45.25, -0.43,  0.27],
+    [-0.43,  127.31,  4.21],
+    [ 0.27,  4.21,  147.20]])

@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '20_herschel':
+np.array([
+    [ 50611.47,  172.48,  267.51],
+    [ 172.48,  25542.21,  6963.52],
+    [ 267.51,  6963.52,  49614.44]])

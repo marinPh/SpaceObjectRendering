@@ -1,0 +1,11 @@
+Information for object '67_p':
+
+Mass: 12200 kg
+Dimensions (along x, y, z): 5.07 m, 3.34 m, 3.72 m
+Center of Mass (x, y, z): [0.08, 0.03, 0.03]
+
+Bounding box:
+    Min corner (x, y, z): [-2.4477, -1.6500, -1.7598]
+    Max corner (x, y, z): [2.6252, 1.6928, 1.9566]
+
+Number of samples for inertia matrix: 100000

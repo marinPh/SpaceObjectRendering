@@ -2,7 +2,7 @@ Information for object '8_xmm_newton':
 
 Mass: 12200 kg
 Dimensions (along x, y, z): 1.59 m, 0.44 m, 1.01 m
-Center of Mass (x, y, z): [-0.00, -0.04, -0.06]
+Center of Mass (x, y, z): [-0.00, -0.02, 0.12]
 
 Bounding box:
     Min corner (x, y, z): [-0.7961, -0.2522, -0.5386]

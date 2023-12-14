@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '11_bepi_mpo':
+np.array([
+    [ 635.82, -2.64, -1.44],
+    [-2.64,  227.07,  80.82],
+    [-1.44,  80.82,  708.60]])

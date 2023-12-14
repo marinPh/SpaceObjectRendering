@@ -1,0 +1,5 @@
+Total combined inertia matrix for object '16_euclid':
+np.array([
+    [ 274.84,  8.64,  9.00],
+    [ 8.64,  164.13, -23.74],
+    [ 9.00, -23.74,  259.92]])
