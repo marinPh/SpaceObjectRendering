@@ -75,7 +75,17 @@ size = np.abs(np.array(maxc) - np.array(minc))
 effective_size = np.mean(size)
 
 # min and max object-camera distance, based on  the size of the object
-
+def inital_direction(origin,fov):
+    mean = np.array([0,0,0])
+    #get distance of origin from fov limit
+    side_limit = np.tan(np.deg2rad(fov/2))*origin[2]    
+    good_var = side_limit/3
+    covariance_matrix = np.array([[good_var,0,0],[0,good_var,0],[0,0,good_var]])
+    
+    vector = np.random.multivariate_normal(mean, covariance_matrix)
+    direction = vector - origin
+    direction = direction/np.linalg.norm(direction)
+    return direction
 
 def calculate_distance_with_fov(
     effective_size, fov_degrees, image_dimension, coverage_ratio
@@ -229,13 +239,14 @@ def generate_optimal_initial_conditions(max_dist, min_dist, fov):
     # Generate a random position within a more central area of the frustum
     def generate_initial_position():
         # Define a factor to limit the range for x and y (e.g., 0.5 for half the frustum width)
-        central_factor = 0.5
-        half_base = max_dist * np.tan(np.deg2rad(fov / 2)) * central_factor
+        z = np.random.uniform(
+            min_dist, max_dist
+        )
+       
+        half_base = z * np.tan(np.deg2rad(fov / 2)) 
         x = np.random.uniform(-half_base, half_base)
         y = np.random.uniform(-half_base, half_base)
-        z = np.random.uniform(
-            min_dist + (max_dist - min_dist) / 4, max_dist - (max_dist - min_dist) / 4
-        )
+        
         return np.array([x, y, z])
 
     # Generate a random, normalized quaternion
@@ -244,9 +255,7 @@ def generate_optimal_initial_conditions(max_dist, min_dist, fov):
         return q
 
     # Generate a moderate initial velocity vector
-    def generate_initial_velocity():
-        v = np.random.uniform(-0.3, 0.3, 3)
-        return v
+   
 
     # Generate a moderate initial rotation vector
     def generate_initial_rotation():
@@ -254,6 +263,9 @@ def generate_optimal_initial_conditions(max_dist, min_dist, fov):
         return w
 
     p0 = generate_initial_position()
+    def generate_initial_velocity():
+        v = inital_direction(p0,fov)*np.random.uniform(0.1,0.5)
+        return v
     q0 = generate_initial_quaternion()
     v0 = generate_initial_velocity()
     w0 = generate_initial_rotation()
@@ -383,7 +395,19 @@ def f15_tumble_integrator(
             # Increment the output frame counter
             output_frame_idx += 1
     return P, Q, W, T
+#a function that returns the initial direction of the tumble
+# that chooses this direction based on the position of the object
+# and with a higher probability of choosing a directions that points towards the (0,0,0) point
 
+    
+    
+   
+    
+ 
+    
+    
+
+    
 
 def main(output_directory: str, object_id: str):
     # Ensure output_directory exists

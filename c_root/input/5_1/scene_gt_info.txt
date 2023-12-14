@@ -4,16 +4,17 @@ Object Group ID: 5
 
 --- Simulation info ---
 Simulation time step: 40.000 s
-Simulation duration: 8600.0 s
+Simulation duration: 6240.0 s
 Time between frames: 0.1 s
-Number of frames: 215
+Number of frames: 156
 
 --- Lighting info ---
-Sun orientation [x, y, z] (unit vector): [ 0.205401, -0.280267,  0.937689]
-Sun energy: 1360 W/m^2
+Sun orientation [x, y, z] (unit vector): [-0.532127,  0.37239 , -0.760373]
+Sun energy: 1000 W/m^2
 --- Object {object_group_id} info ---
 
-Initial position [x, y, z] (m): [-13.5, -1.3, 106.4]
-Initial attitude quaternion [qw, qx, qy, qz]: [-0.1, 0.2, -0.8, -0.5]
-Initial velocity vector [x, y, z] (m/s): [-1.1, 0.5, -0.3]
-Initial angular velocity vector [x, y, z] (rad/s): [2.881110, -0.458486, -1.400278]
+Initial position [x, y, z] (m): [-5.7, 1.8, 39.3]
+Initial attitude quaternion [qw, qx, qy, qz]: [0.9, 0.3, -0.2, 0.2]
+Initial velocity vector [x, y, z] (m/s): [-0.0, -0.1, 0.2]
+Initial angular velocity vector [x, y, z] (rad/s): [0.004753, -0.036780, -0.029563]
+Min/Max distance: [32.78711336764239, 42.32798134769785]

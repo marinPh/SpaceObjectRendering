@@ -13,7 +13,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from Utils import save_info_to_files_utils as utils
-from Utils import data_constants as dc
+from Utils import dataset_constants as dc
 
 num_poses =100
 sun_rnd_generated : bool = True
