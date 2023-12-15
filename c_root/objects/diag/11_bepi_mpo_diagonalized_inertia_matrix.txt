@@ -1,0 +1,22 @@
+Object name: 11_bepi_mpo
+
+Total combined inertia matrix for object '11_bepi_mpo' (zeroing out all non-diagonal components):
+np.array([
+    [635.82,   0.00,   0.00],
+    [  0.00, 227.07,   0.00],
+    [  0.00,   0.00, 708.60]
+])
+
+Zeroing out non-diagonal components Inaccuracy: 114.38
+
+Total combined inertia matrix for object '11_bepi_mpo' (using eigenvectors):
+np.array([
+    [213.85,   0.00,   0.00],
+    [  0.00, 635.79,   0.00],
+    [  0.00,   0.00, 721.84]
+])
+
+Diagonalization using eigenvectors Inaccuracy: 598.64
+Diagonalization using eigenvectors Rotation applied (in degrees): [  8.09,  -7.94, 178.70]
+
+The inaccuracy is the Frobenius norm (like a Euclidean distance) between the original matrix and the matrix after diagonalization.

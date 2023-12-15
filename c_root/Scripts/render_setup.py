@@ -16,6 +16,7 @@ import sys
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 from Utils import dataset_constants as dc
+from Utils import file_tools as ft
 
 
 
@@ -139,7 +140,13 @@ def sun_direction_import(sunpath: str) -> np.ndarray:
     if os.path.exists(sunpath):
         return np.loadtxt(sunpath, usecols=range(1, 4), delimiter=",")
     else:
-        raise FileNotFoundError(f"The file {sunpath} does not exist.")
+        #exctract sun direction from info file
+        info_path = sunpath.replace("sun_gt.txt", dc.scene_info_file_name)
+        
+        vector = scene_info_import(info_path)
+        print (info_path)
+        print(vector)
+        return np.array([vector])
 
 
 def scene_info_import(info_path: str) -> tuple[float, float, float]:

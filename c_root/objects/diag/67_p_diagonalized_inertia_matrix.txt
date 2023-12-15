@@ -1,0 +1,22 @@
+Object name: 67_p
+
+Total combined inertia matrix for object '67_p' (zeroing out all non-diagonal components):
+np.array([
+    [20188.03,   0.00,   0.00],
+    [  0.00, 30015.46,   0.00],
+    [  0.00,   0.00, 28207.57]
+])
+
+Zeroing out non-diagonal components Inaccuracy: 6220.04
+
+Total combined inertia matrix for object '67_p' (using eigenvectors):
+np.array([
+    [18331.92,   0.00,   0.00],
+    [  0.00, 29032.26,   0.00],
+    [  0.00,   0.00, 31046.88]
+])
+
+Diagonalization using eigenvectors Inaccuracy: 7152.79
+Diagonalization using eigenvectors Rotation applied (in degrees): [  4.69,   6.51,  18.00]
+
+The inaccuracy is the Frobenius norm (like a Euclidean distance) between the original matrix and the matrix after diagonalization.

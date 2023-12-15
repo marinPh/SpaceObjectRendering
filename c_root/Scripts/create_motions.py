@@ -76,11 +76,12 @@ effective_size = np.mean(size)
 
 # min and max object-camera distance, based on  the size of the object
 def inital_direction(origin,fov):
-    mean = np.array([0,0,0])
+    # 0,0,
+    mean = np.array([0,0,(max_distance-min_distance)/2 + min_distance])
     #get distance of origin from fov limit
     side_limit = np.tan(np.deg2rad(fov/2))*origin[2]    
     good_var = side_limit/3
-    covariance_matrix = np.array([[good_var,0,0],[0,good_var,0],[0,0,good_var]])
+    covariance_matrix = np.array([[good_var,0,0],[0,good_var,0],[0,0,(max_distance-min_distance)/6]])
     
     vector = np.random.multivariate_normal(mean, covariance_matrix)
     direction = vector - origin

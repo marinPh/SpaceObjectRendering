@@ -1,0 +1,22 @@
+Object name: 24_juice_v8
+
+Total combined inertia matrix for object '24_juice_v8' (zeroing out all non-diagonal components):
+np.array([
+    [1128.04,   0.00,   0.00],
+    [  0.00, 1089.57,   0.00],
+    [  0.00,   0.00,  74.34]
+])
+
+Zeroing out non-diagonal components Inaccuracy:  11.95
+
+Total combined inertia matrix for object '24_juice_v8' (using eigenvectors):
+np.array([
+    [1129.77,   0.00,   0.00],
+    [  0.00, 1087.84,   0.00],
+    [  0.00,   0.00,  74.34]
+])
+
+Diagonalization using eigenvectors Inaccuracy:  12.20
+Diagonalization using eigenvectors Rotation applied (in degrees): [ -0.09,  -0.01, 180.00]
+
+The inaccuracy is the Frobenius norm (like a Euclidean distance) between the original matrix and the matrix after diagonalization.

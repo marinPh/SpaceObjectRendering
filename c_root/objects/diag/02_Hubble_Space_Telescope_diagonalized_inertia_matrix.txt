@@ -1,22 +1,22 @@
-
+Object name: 02_Hubble_Space_Telescope
 
 Total combined inertia matrix for object '02_Hubble_Space_Telescope' (zeroing out all non-diagonal components):
 np.array([
-    [27727.55,   0.00,   0.00],
-    [  0.00, 196521.08,   0.00],
-    [  0.00,   0.00, 198065.01]
+    [69630.27,   0.00,   0.00],
+    [  0.00, 240148.36,   0.00],
+    [  0.00,   0.00, 216535.38]
 ])
 
-Zeroing out non-diagonal components Inaccuracy: 1116.45
+Zeroing out non-diagonal components Inaccuracy: 2003.75
 
 Total combined inertia matrix for object '02_Hubble_Space_Telescope' (using eigenvectors):
 np.array([
-    [27723.86,   0.00,   0.00],
-    [  0.00, 196524.03,   0.00],
-    [  0.00,   0.00, 198065.75]
+    [69618.47,   0.00,   0.00],
+    [  0.00, 240159.97,   0.00],
+    [  0.00,   0.00, 216535.57]
 ])
 
-Diagonalization using eigenvectors Inaccuracy: 1116.46
-Diagonalization using eigenvectors Rotation applied (in degrees): [  0.00,   0.15, 180.00]
+Diagonalization using eigenvectors Inaccuracy: 2003.82
+Diagonalization using eigenvectors Rotation applied (in degrees): [  0.00,   0.14, -180.00]
 
 The inaccuracy is the Frobenius norm (like a Euclidean distance) between the original matrix and the matrix after diagonalization.

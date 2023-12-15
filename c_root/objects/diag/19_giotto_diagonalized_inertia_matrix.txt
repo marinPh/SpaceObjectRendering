@@ -1,0 +1,22 @@
+Object name: 19_giotto
+
+Total combined inertia matrix for object '19_giotto' (zeroing out all non-diagonal components):
+np.array([
+    [  2.84,   0.00,   0.00],
+    [  0.00,   2.30,   0.00],
+    [  0.00,   0.00,   2.88]
+])
+
+Zeroing out non-diagonal components Inaccuracy:   0.03
+
+Total combined inertia matrix for object '19_giotto' (using eigenvectors):
+np.array([
+    [  2.84,   0.00,   0.00],
+    [  0.00,   2.30,   0.00],
+    [  0.00,   0.00,   2.88]
+])
+
+Diagonalization using eigenvectors Inaccuracy:   0.03
+Diagonalization using eigenvectors Rotation applied (in degrees): [  0.00,   0.00,  -2.12]
+
+The inaccuracy is the Frobenius norm (like a Euclidean distance) between the original matrix and the matrix after diagonalization.

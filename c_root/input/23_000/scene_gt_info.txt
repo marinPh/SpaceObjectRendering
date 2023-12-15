@@ -1,0 +1,13 @@
+----- Random poses info (ID : 000) -----
+
+Object Group ID: 23
+
+--- Pose generation info ---
+Min distance (from camera): 8.971429600325827 meters
+Max distance (from camera): 11.58206581124473 meters
+Number of poses: 100
+Number of generated layers: 300
+
+--- Lighting info ---
+Sun orientation : Random orientation for each pose (sun_gt.txt)
+Sun energy : 100 W/m^2

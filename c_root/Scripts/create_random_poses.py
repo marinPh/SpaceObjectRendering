@@ -7,13 +7,17 @@ Description: Generates random poses for a single object.
 import numpy as np
 import os
 import math
+import sys
 from pyquaternion import Quaternion
+sys.path.append(os.path.abspath("."))
+from Utils import file_tools as ft
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from Utils import save_info_to_files_utils as utils
 from Utils import dataset_constants as dc
+
 
 num_poses =100
 sun_rnd_generated : bool = True
@@ -28,10 +32,8 @@ output_directory = os.path.join(
 
 # Object properties
 
-if len(sys.argv) > 2:
-    object_name = sys.argv[-2]
-    tumble_id = sys.argv[-1]
-
+#get object name from command line
+object_name = sys.argv[sys.argv.index("--") + 1]
 # Object ID
 object_id = object_name.split("_")[0]
 # Tumble ID
@@ -46,13 +48,19 @@ inertia_path = os.path.join(
 # Object properties
 
 #bbox of current object
-bbox = dc.object_bounding_boxes[object_id]
+info_path = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)),
+    "objects",
+    "inertia",
+    f"{object_name}_info.txt",
+)
+bbox = ft.extract_corners(info_path)
 #size of current object
-size = np.abs(bbox[1] - bbox[0])
+size = np.abs(np.array(bbox[1]) - np.array(bbox[0]))
 effective_size = np.mean(size)
 
 output_directory = (
-    os.path.join(output_directory, object_id + dc.random_poses_motion_id)
+    os.path.join(output_directory, object_id +"_"+ dc.random_poses_motion_id)
 )
 
 #min and max object-camera distance, based on  the size of the object

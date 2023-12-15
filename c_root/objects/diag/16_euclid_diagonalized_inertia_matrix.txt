@@ -1,0 +1,22 @@
+Object name: 16_euclid
+
+Total combined inertia matrix for object '16_euclid' (zeroing out all non-diagonal components):
+np.array([
+    [274.84,   0.00,   0.00],
+    [  0.00, 164.13,   0.00],
+    [  0.00,   0.00, 259.92]
+])
+
+Zeroing out non-diagonal components Inaccuracy:  37.93
+
+Total combined inertia matrix for object '16_euclid' (using eigenvectors):
+np.array([
+    [157.63,   0.00,   0.00],
+    [  0.00, 279.13,   0.00],
+    [  0.00,   0.00, 262.13]
+])
+
+Diagonalization using eigenvectors Inaccuracy: 168.54
+Diagonalization using eigenvectors Rotation applied (in degrees): [-11.34, -12.40,  -3.16]
+
+The inaccuracy is the Frobenius norm (like a Euclidean distance) between the original matrix and the matrix after diagonalization.

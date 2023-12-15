@@ -128,8 +128,11 @@ def main() -> None:
         #get the index of objects in the scene
   
         mask_node.base_path = os.path.join(output_directory, motion, dc.mask_folder_name)
-        bpy.context.scene.render.filepath = os.path.join(output_directory, motion, dc.render_folder_name) 
+        rgb_path = os.path.join(output_directory, motion, dc.render_folder_name) 
         
+        if not os.path.exists(rgb_path):
+            os.makedirs(rgb_path)
+        bpy.context.scene.render.filepath = rgb_path
         bpy.context.scene.frame_start = 0 
         bpy.context.scene.frame_current = 0 
         bpy.context.scene.frame_end = nb_frames - 1 
@@ -147,12 +150,19 @@ def main() -> None:
             print("update_progress_bar")
             pbar.update(1)
 
+        
         # Register the handlers
         bpy.app.handlers.render_post.append(update_progress_bar)
+        #I want to see the object position in the scene
+        
+        
+        
+        
         
 
         # Render the animation
-        bpy.ops.render.render('INVOKE_DEFAULT', animation=True)
+   
+        bpy.ops.render.render( animation=True)
 
         # Remove the handler when rendering is finished
         bpy.app.handlers.render_post.remove(update_progress_bar)

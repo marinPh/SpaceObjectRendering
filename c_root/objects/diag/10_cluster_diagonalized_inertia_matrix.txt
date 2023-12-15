@@ -1,0 +1,22 @@
+Object name: 10_cluster
+
+Total combined inertia matrix for object '10_cluster' (zeroing out all non-diagonal components):
+np.array([
+    [75489.36,   0.00,   0.00],
+    [  0.00, 144038.81,   0.00],
+    [  0.00,   0.00, 73154.23]
+])
+
+Zeroing out non-diagonal components Inaccuracy: 5205.49
+
+Total combined inertia matrix for object '10_cluster' (using eigenvectors):
+np.array([
+    [70464.73,   0.00,   0.00],
+    [  0.00, 78178.34,   0.00],
+    [  0.00,   0.00, 144039.34]
+])
+
+Diagonalization using eigenvectors Inaccuracy: 97029.09
+Diagonalization using eigenvectors Rotation applied (in degrees): [ 47.71, -28.48, 113.59]
+
+The inaccuracy is the Frobenius norm (like a Euclidean distance) between the original matrix and the matrix after diagonalization.

@@ -33,10 +33,11 @@ output_dir : str = os.path.join(proj_dir,"output")
 # Object properties
 
 # Initial position [m] [x,y,z]
-p0 = np.array([40, 0, 90])
-# Initial attitude quaternion [q0,qx,qy,qz]
-rotation_angle = np.pi / 2  # 90 degrees in radians
-rotation_axis = np.array([0, 1, 0])  # rotation around the y-axis
+p0 = np.array([0, 0, 0])
+# Initial orientation [q0,qx,qy,qz]
+rotation_axis = np.array([0, 0, 1])
+rotation_angle = math.pi/2
+
 q0 = Quaternion(axis=rotation_axis, angle=rotation_angle)
 # Initial velocity vector [m/s] [x,y,z]
 v0 = np.array([-3.5, 0, -5])
