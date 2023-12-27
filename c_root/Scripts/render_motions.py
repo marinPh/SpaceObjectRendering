@@ -121,7 +121,7 @@ def main() -> None:
         if dc.mask_node_name not in nodes:
             raise KeyError("No mask node found in the compositing tree")
         # set nb of samples
-        bpy.context.scene.cycles.samples = 32
+        bpy.context.scene.cycles.samples = 2048
         print(f"-------->{bpy.context.scene.objects}")
         mask_node = nodes[dc.mask_node_name]
      

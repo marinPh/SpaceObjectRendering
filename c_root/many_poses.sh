@@ -17,6 +17,7 @@ for OBJECT_NAME in "${OBJECT_NAMES[@]}"; do
   blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/create_motions.py" -- "$OBJECT_NAME" "1"
   blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/create_motions.py" -- "$OBJECT_NAME" "2"
   blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/create_random_poses.py" -- "$OBJECT_NAME" 
+
 done
 
 

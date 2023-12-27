@@ -13,3 +13,4 @@ python_exe = sys.executable
 
 subprocess.run([python_exe,"-m", "pip", "install", module])
 print(f"-----{module} installed-----")
+

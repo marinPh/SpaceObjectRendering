@@ -28,7 +28,7 @@ echo "OBJECT_NAME: $OBJECT_NAME"
 echo "OBJECT_DIR: $OBJECT_DIR"
 echo "SCRIPTS_DIR: $SCRIPTS_DIR"
 echo "starting imports"
-#blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/Utils/import_modules.py"
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "./Utils/import_modules.py"
 echo "imports done"
 
 
@@ -36,7 +36,7 @@ echo "imports done"
 # Execute your Python scripts with the full path to the Python executable
 
 echo "starting matrix calculation"
-blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/calculate_inertia_matrix.py" -- "$OBJECT_NAME"
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/inertia_mesh.py" -- "$OBJECT_NAME"
 echo "matrix calculation done"
 echo "starting diagonalisation"
 echo "--mainobj = ${OBJECT_NAME}"

@@ -35,6 +35,6 @@ for OBJECT_NAME in "${OBJECT_NAMES[@]}"; do
   echo "Processing object: $OBJECT_NAME"
   # Add your code here to perform operations on each object
   # For example:
- # blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/Utils/import_modules.py"
+  blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/Utils/import_modules.py"
   blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "./Utils/tree_viewer_editor.py" -- "$OBJECT_NAME"
 done

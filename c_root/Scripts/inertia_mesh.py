@@ -1,3 +1,4 @@
+print("----->start")
 import pymeshlab
 import numpy as np
 import os

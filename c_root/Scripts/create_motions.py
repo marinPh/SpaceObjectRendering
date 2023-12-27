@@ -16,6 +16,8 @@ from Utils.save_info_to_files_utils import save_camera_info_to_file
 import Utils.dataset_constants as dc
 from Utils import file_tools
 
+from scripts import motion_rep as mr
+
 
 
 
@@ -80,8 +82,9 @@ def inital_direction(origin,fov):
     mean = np.array([0,0,(max_distance-min_distance)/2 + min_distance])
     #get distance of origin from fov limit
     side_limit = np.tan(np.deg2rad(fov/2))*origin[2]    
-    good_var = side_limit/3
-    covariance_matrix = np.array([[good_var,0,0],[0,good_var,0],[0,0,(max_distance-min_distance)/6]])
+    good_var = side_limit/5
+    #TODO: check if we want z distribution to be different
+    covariance_matrix = np.array([[good_var,0,0],[0,good_var,0],[0,0,(max_distance-min_distance)/8]])
     
     vector = np.random.multivariate_normal(mean, covariance_matrix)
     direction = vector - origin
@@ -483,6 +486,8 @@ def main(output_directory: str, object_id: str):
         V0=v0,
         W0=w0,
     )
+
+    mr.show_motion(P, object_name, os.path.dirname(os.path.dirname(__file__)), tumble_id)
 
 
 if __name__ == "__main__":
