@@ -14,7 +14,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Utils import dataset_constants as dc
 
 
-def create_html_from_inside_points(all_inside_points, main_obj_name, output_directory,pose_id):
+def create_html_from_inside_points(all_inside_points, main_obj_name, output_directory):
     # Generate the 3D scatter plot
     x = [point[0] for point in all_inside_points]
     y = [point[1] for point in all_inside_points]
