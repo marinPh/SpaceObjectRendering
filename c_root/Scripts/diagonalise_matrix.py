@@ -9,6 +9,10 @@ import argparse
 
 import numpy as np
 import os
+import site
+user_site_packages = site.getusersitepackages()
+print (user_site_packages)
+sys.path.append(user_site_packages)
 from scipy.spatial.transform import Rotation
 import re
 import sys
@@ -62,6 +66,7 @@ def rotation_matrix_to_euler_angles(matrix):
     return rot.as_euler('xyz', degrees=True)
 
 def calculate_inaccuracy(matrix1, matrix2):
+    #TODO norm before subtracting
     return np.linalg.norm(matrix1 - matrix2)
 
 def read_inertia_matrix_from_file(file_path):

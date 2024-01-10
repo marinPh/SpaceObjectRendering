@@ -5,6 +5,12 @@ Description: Constants for dataset generation.
 """
 
 import numpy as np
+import math
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from Utils import file_tools
+
 
 ################################################
 # Camera info
@@ -35,7 +41,8 @@ max_distance : float = 300
 light_name : str = "Light"
 
 # Light energy [W/m^2]
-light_energy : float = 1360
+light_energy  = 100
+possible_light_energies = [10,100,1000]
 
 # Light position [x, y, z] only for visualization purposes (sun is infinitely far away)
 light_position : np.ndarray = np.array([0, 0, 0])
@@ -57,6 +64,12 @@ sun_orientations_file_name : str = "sun_gt.txt"
 
 # Camera info file
 camera_info_file_name : str = "scene_camera.txt"
+# coverage for min distance
+min_coverage_ratio = 0.25**0.5
+# coverage for max distance
+max_coverage_ratio = 0.05
+# image dimension
+image_dimension = 1024
 
 ################################################
 # Output infos
@@ -92,6 +105,9 @@ default_sim_t = 40
 # Time between frames [s]
 frame_t = 0.1
 
+#min wanted frames
+min_frames = 100
+
 ################################################
 # Random poses generation
 
@@ -108,6 +124,21 @@ nb_layers : int = 300
 random_poses_motion_id : str = "000"
 
 ################################################
+#distribution of the points in the frustum
+def mean_and_covariance_matrix(object_name):
+    min = calculate_distance_with_fov(object_size(object_name), min_coverage_ratio)
+    max = calculate_distance_with_fov(object_size(object_name), max_coverage_ratio)
+    mean = np.array([0,0,(max-min)/2 + min])
+    #get distance of origin from fov limit
+    side_limit = np.tan(np.deg2rad(camera_fov/2))*mean[2]
+    good_var = side_limit/10
+    covariance_matrix = np.array([[good_var,0,0],[0,good_var,0],[0,0,(max-min)/16]])
+    return mean, covariance_matrix/5
+    
+
+
+################################################
+
 # Objects in project
 
 # Object names and ids
@@ -152,4 +183,50 @@ group_ids : dict[str, set[str]] = {
     "34": {"02", "03", "04"}, # --
     "41": {"01", "02", "03", "04"} # --
 }
-################################################
+
+def calculate_distance_with_fov(
+    effective_size, coverage_ratio
+):
+    """
+    Calculates the distance from the camera to the object based on the desired coverage ratio of the image,
+    assuming a typical camera field of view.
+    """
+    fov_radians = math.radians(camera_fov)
+    covered_image_dimension = coverage_ratio * image_dimension
+    distance = (effective_size / 2) / math.tan(fov_radians / 2)
+    adjusted_distance = distance * (image_dimension / covered_image_dimension)
+    return adjusted_distance
+
+def create_square_fov(distance):
+    half_square = distance * math.sin(math.radians(camera_fov / 2))
+    square_corners = np.array(
+        [
+            [half_square, half_square, distance],
+            [-half_square, half_square, distance],
+            [-half_square, -half_square, distance],
+            [half_square, -half_square, distance],
+        ]
+    )
+    return square_corners
+
+def object_size(object_name):
+    # go look for in the file objects/inertia/{object_name}_info.txt
+    # return the size of the object
+    # if the file doesn't exist, return 0
+    info_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "objects",
+        "inertia",
+        f"{object_name}_info.txt",
+    )
+    if os.path.exists(info_path):
+        maxc, minc = file_tools.extract_corners(info_path)
+        size = np.abs(np.array(maxc) - np.array(minc))
+        effective_size = np.mean(size)
+        return effective_size
+    else:
+        return 0
+
+
+
+

@@ -1,0 +1,13 @@
+"""
+    with tqdm(total=num_samples) as progress_bar:
+        while num_inside_points < num_samples:
+            point = random_point_in_bbox(min_corner, max_corner)
+            for obj in bvh_trees:
+                if point_is_inside_tree(point, obj):
+                    num_inside_points += 1
+                    global_approx_com += point
+                    all_inside_points.append(point)
+                    colorful_progress_bar(num_inside_points, num_samples)
+                    break
+                
+            progress_bar.update(num_inside_points - progress_bar.n)"""

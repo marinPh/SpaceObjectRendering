@@ -4,7 +4,11 @@ Date:       June 9, 2023
 Description: Applies the motion from the dataset to the objects in the scene.
 """
 from __future__ import annotations
-
+import sys
+import site
+user_site_packages = site.getusersitepackages()
+print (user_site_packages)
+sys.path.append(user_site_packages)
 import argparse
 
 import bpy
@@ -12,7 +16,7 @@ import numpy as np
 from mathutils import Vector
 import os
 import re
-import sys
+
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 from Utils import dataset_constants as dc
@@ -82,7 +86,7 @@ def apply_blender_animation(objects_dict: dict[str, str],
                             cam_rot: np.ndarray,
                             light_pos: Vector,
                             light_rot: np.ndarray,
-                            light_energy: float,
+                            sun_energies: list[float],
                             nb_im: int | None) -> int:
     # Import motion and sun data 
     print("Motion path:", motions_path)
@@ -101,9 +105,9 @@ def apply_blender_animation(objects_dict: dict[str, str],
 
     # Initialize objects
     init_objects(objects_dict, objects_ids)
-    init_scene(camera_name, lightsource_name, cam_pos, cam_rot, light_pos, light_rot, light_energy)
+    init_scene(camera_name, lightsource_name, cam_pos, cam_rot, light_pos, light_rot)
 
-    create_animation(objects_dict, objects_ids, motion_quat, trans_vec, lightsource_name, sun_rot, nb_im=nb_im)
+    create_animation(objects_dict, objects_ids, motion_quat, trans_vec,sun_energies, lightsource_name, sun_rot, nb_im=nb_im)
 
     return len(motion_quat[objects_ids[0]])
 
@@ -203,32 +207,47 @@ def sun_vectors_to_quaternions(sun_vectors: np.ndarray) -> np.ndarray:
 
 
 def apply_sun_quaternion(sun_obj, sun_quaternion, frame_num):
+    print(f"sun_quaternion = {sun_quaternion}")
+    print(f"frame_num = {frame_num}")
     if sun_quaternion is not None:
         sun_obj.rotation_mode = 'QUATERNION'
         sun_obj.rotation_quaternion = sun_quaternion[frame_num]
         sun_obj.keyframe_insert(data_path="rotation_quaternion", index=-1)
 
 
-def create_animation(objects_dict: dict[str, str], object_ids: list[str], motion_quat: dict, trans_vec: dict,
-                     lightsource_name: str = "Lightsource", sun_dir: np.ndarray | None = None,
-                     nb_im: int | None = None) -> None:
-    # generating motion and rendering
+def create_animation(
+    objects_dict: dict[str, str],
+    object_ids: list[str],
+    motion_quat: dict,
+    trans_vec: dict,
+    sun_energies: list[float],  # Added parameter for dynamic sun energies
+    lightsource_name: str = "Lightsource",  # Default parameter
+    sun_dir: np.ndarray | None = None,      # Default parameter
+    nb_im: int | None = None                # Default parameter
+) -> None:
+    # Generating motion and rendering
 
     # Either render all images in motion or only the first nb_im images
     length = motion_quat[object_ids[0]].shape[0] if nb_im is None else nb_im  # Number of images to render
     print(f'Rendering {length} images')
 
-    # 
     for frame_num in range(length):
-        # for every frame
+        # Set scene for every frame
         bpy.context.scene.frame_set(frame_num)
 
-        # insert sun direction
-        apply_sun_quaternion(bpy.data.objects[lightsource_name], sun_dir, frame_num)
+        # Insert sun direction if available
+        if sun_dir is not None:
+            apply_sun_quaternion(bpy.data.objects[lightsource_name], sun_dir, frame_num)
 
-        insert_object_keyframes(objects_dict, main_obj_name.split("_")[0], motion_quat, trans_vec, frame_num)
+        # Set the light energy for the current frame
+        bpy.data.objects[lightsource_name].data.energy = sun_energies[frame_num]
 
-        frame_num += 1
+        # Keyframe the light energy
+        bpy.data.objects[lightsource_name].data.keyframe_insert(data_path="energy", frame=frame_num)
+
+        # Insert object keyframes
+        for object_id in object_ids:
+            insert_object_keyframes(objects_dict, object_id, motion_quat, trans_vec, frame_num)
 
 
 def insert_object_keyframes(objects_dict: dict[str, str], object_id: str, motion_quat: dict, trans_vec: dict,
@@ -264,10 +283,10 @@ def init_objects(objects_dict: dict[str, str], object_ids: list[str]):
 
 def init_scene(camera_name: str, light_name: str, cam_pos: Vector,
                cam_rot: np.ndarray, light_pos: Vector,
-               light_rot: np.ndarray, light_energy: float):
+               light_rot: np.ndarray):
     # Set camera position and rotation
     init_camera(camera_name, cam_pos, cam_rot)
-    init_sun(light_name, light_pos, light_rot, light_energy)
+    init_sun(light_name, light_pos, light_rot)
 
 #TODO recheck the inputs of camera FOV FOCAL LENGTH and SENSOR WIDTH
 def init_camera(camera_name: str, cam_pos: Vector, cam_rot: np.ndarray):
@@ -279,7 +298,8 @@ def init_camera(camera_name: str, cam_pos: Vector, cam_rot: np.ndarray):
 
 
 
-def init_sun(sun_name: str, sun_pos: Vector, sun_rot: np.ndarray, light_energy: float):
+def init_sun(sun_name: str, sun_pos: Vector, sun_rot: np.ndarray):
+    
     sun = bpy.data.objects[sun_name]
     sun.location = sun_pos
     sun.rotation_mode = 'QUATERNION'
@@ -287,11 +307,13 @@ def init_sun(sun_name: str, sun_pos: Vector, sun_rot: np.ndarray, light_energy: 
     sun_quaternion_rot = sun_vectors_to_quaternions(np.array([sun_rot]))[0]
     sun.rotation_quaternion = sun_quaternion_rot
     lamp_data = bpy.data.lights[sun_name]
-    lamp_data.energy = light_energy  # Set light energy
-
 
 # main function
 if __name__ == '__main__':
+    sun_energy_path = os.path.join(input_directory, motion_id,"sun_energy.txt")
+    with open(sun_energy_path, 'r') as file:
+        sun_energies = [float(line.strip().split(',')[1]) for line in file.readlines()]
+
     bpy.ops.wm.open_mainfile(filepath=blend_file_path)
     apply_blender_animation(motions_path=motions_path,
                             sun_path=sun_path,
@@ -304,5 +326,5 @@ if __name__ == '__main__':
                             cam_rot=dc.camera_direction,
                             light_pos=dc.light_position,
                             light_rot=light_dir,
-                            light_energy=dc.light_energy,
+                            sun_energies=sun_energies,
                             nb_im=nb_im)

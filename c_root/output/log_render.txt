@@ -333,3 +333,15 @@ light_pos=[0 0 0]
 light_default_direction=[0 0 1]
 light_energy=1360
 nb_im=None
+no sunpath
+sun_path=None
+info_path=/mnt/c/Users/Poséidon/Documents/renderCommand/c_root/./input/6_1/scene_gt_info.txt
+num_cols=8
+object_name={'01': '01_James_Webb_Space_Telescope', '02': '02_Hubble_Space_Telescope', '03': '03_CosmosLink', '04': '04_Rocket_Body', '5': '5_MTM'}
+camera_name=Camera
+light_name=Light
+camera_pos=[0 0 0]
+camera_dir=[0 1 0 0]
+light_pos=[0 0 0]
+light_default_direction=[0 0 1]
+nb_im=None

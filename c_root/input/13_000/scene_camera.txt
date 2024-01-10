@@ -1,4 +1,0 @@
---- Camera info ---
-FOV: 40°
-Camera position (m) [x, y, z]: [0.00, 0.00, 0.00]
-Camera orientation (Quaternion) [w, x, y, z]): [0.00, 1.00, 0.00, 0.00]

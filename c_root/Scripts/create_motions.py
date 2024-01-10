@@ -1,22 +1,26 @@
 """
 Description: Generates motion for an object.
 """
-
+import sys
 import os
+import site
+user_site_packages = site.getusersitepackages()
+print (user_site_packages)
+sys.path.append(user_site_packages)
 import numpy as np
+
 from pyquaternion import Quaternion
 import math
 from tqdm import tqdm
-import sys
-import re
+
+import random
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from Utils.save_info_to_files_utils import save_camera_info_to_file
 import Utils.dataset_constants as dc
 from Utils import file_tools
-
-from scripts import motion_rep as mr
+from Utils import motion_rep as mr
 
 
 
@@ -78,17 +82,13 @@ effective_size = np.mean(size)
 
 # min and max object-camera distance, based on  the size of the object
 def inital_direction(origin,fov):
-    # 0,0,
-    mean = np.array([0,0,(max_distance-min_distance)/2 + min_distance])
-    #get distance of origin from fov limit
-    side_limit = np.tan(np.deg2rad(fov/2))*origin[2]    
-    good_var = side_limit/5
-    #TODO: check if we want z distribution to be different
-    covariance_matrix = np.array([[good_var,0,0],[0,good_var,0],[0,0,(max_distance-min_distance)/8]])
-    
-    vector = np.random.multivariate_normal(mean, covariance_matrix)
-    direction = vector - origin
-    direction = direction/np.linalg.norm(direction)
+   #get the direction vector in a uniform distribution
+    z = np.random.uniform(min_distance, max_distance)
+    half_base_angle = np.deg2rad(fov / 2)
+    half_base_size = z * np.tan(half_base_angle)
+    x = np.random.uniform(-half_base_size, half_base_size)
+    y = np.random.uniform(-half_base_size, half_base_size)
+    direction = np.array([x,y,z])
     return direction
 
 def calculate_distance_with_fov(
@@ -107,12 +107,12 @@ def calculate_distance_with_fov(
 
 # min object-camera distance
 min_distance = calculate_distance_with_fov(
-    effective_size, dc.camera_fov, 1024, 0.25**0.5
+    effective_size, dc.camera_fov, 1024, dc.min_coverage_ratio
 )
 
 # max object-camera distance
 max_distance = calculate_distance_with_fov(
-    effective_size, dc.camera_fov, 1024, 0.15**0.5
+    effective_size, dc.camera_fov, 1024, dc.max_coverage_ratio
 )
 
 # camera field of view
@@ -123,7 +123,13 @@ fov = dc.camera_fov
 
 # Select random sun orientation in cartesian coordinates
 sun_orientation: np.ndarray | None = None  # None for random orientation
-sun_energy = 1000
+
+def get_random_light_energy():
+    # Define the possible sun energy values
+    possible_energies = dc.possible_light_energies
+
+    # Randomly select one intensity value
+    return random.choice(possible_energies)
 
 
 ################################################
@@ -238,7 +244,26 @@ def generate_random_unit_vector() -> np.ndarray:
 
     # Generates an initial position in the frustum
 
+def line_plane_intersection(point, direction, plane_normal, plane_point):
+    point = np.array(point)
+    direction = np.array(direction)
+    plane_normal = np.array(plane_normal)
+    plane_point = np.array(plane_point)
 
+    # Calculate the dot product of the direction vector and the plane normal
+    dot_product = np.dot(direction, plane_normal)
+
+    # Check if the line is parallel to the plane
+    if abs(dot_product) < 1e-6:
+        return None  # No intersection, the line is parallel to the plane
+
+    # Calculate the parameter t for the line-plane intersection
+    t = np.dot(plane_point - point, plane_normal) / dot_product
+
+    # Calculate the intersection point
+    intersection_point = point + t * direction
+
+    return t
 def generate_optimal_initial_conditions(max_dist, min_dist, fov):
     # Generate a random position within a more central area of the frustum
     def generate_initial_position():
@@ -263,13 +288,48 @@ def generate_optimal_initial_conditions(max_dist, min_dist, fov):
 
     # Generate a moderate initial rotation vector
     def generate_initial_rotation():
-        w = np.random.uniform(-0.05, 0.05, 3)
+        w = np.random.uniform(-1, 1, 3)
         return w
 
     p0 = generate_initial_position()
     def generate_initial_velocity():
-        v = inital_direction(p0,fov)*np.random.uniform(0.1,0.5)
-        return v
+        side1_norm = [0,0,1]
+        side2_norm = [0,0,-1]
+        side3_norm = [math.cos(math.radians(fov/2)),0,math.sin(math.radians(fov/2))]
+        side4_norm = [-math.cos(math.radians(fov/2)),0,math.sin(math.radians(fov/2))]
+        side5_norm = [0,math.cos(math.radians(fov/2)),math.sin(math.radians(fov/2))]
+        side6_norm = [0,-math.cos(math.radians(fov/2)),math.sin(math.radians(fov/2))]
+        direction  = np.random.uniform(-1, 1, 3)
+        direction = direction/np.linalg.norm(direction)
+              
+        t1 = line_plane_intersection(p0, direction, side1_norm, [0,0,min_dist])
+        t2 = line_plane_intersection(p0, direction, side2_norm, [0,0,max_dist])
+        t3 = line_plane_intersection(p0, direction, side3_norm, [0,0,0])
+        t4 = line_plane_intersection(p0, direction, side4_norm, [0,0,0])
+        t5 = line_plane_intersection(p0, direction, side5_norm, [0,0,0])
+        t6 = line_plane_intersection(p0, direction, side6_norm, [0,0,0])
+        t = [t1,t2,t3,t4,t5,t6]
+        t = [i for i in t if i is not None and i > 0]
+        t = min(t)
+        p = p0 + t*direction
+        print(f"p: {p}")
+        
+        
+        direction = p - p0
+        # we want at least dc.min_frames of the object to be in the frustum
+        # so we want the object to move at least dc.min_frames*dc.frame_t
+        print(f"direction: {direction}")
+        print(f"t: {t}")
+        print(f"dc.min_frames*dc.frame_t: {dc.min_frames*dc.frame_t}")
+        direction = direction/(dc.min_frames*dc.frame_t)
+        print(f"direction: {direction}")
+        print(f"tumble_id: {tumble_id}")
+        return direction
+       #get the point where the direction vector intersects the frustum
+    
+       
+        
+        
     q0 = generate_initial_quaternion()
     v0 = generate_initial_velocity()
     w0 = generate_initial_rotation()
@@ -422,6 +482,7 @@ def main(output_directory: str, object_id: str):
     P, Q = create_object_motion(
         p0, q0, v0, w0, dt, sim_t, frame_t, I, max_distance, min_distance, fov
     )
+    print(f"Number of frames: {len(P)}")
     # Now let's write the positions (P) and quaternions (Q) to a file
     scene_gt_path = f"{output_path}/scene_gt.txt"  # Construct the full path to the file
     with open(scene_gt_path, "w") as file:
@@ -446,8 +507,8 @@ def main(output_directory: str, object_id: str):
             file.write(f"----- Tumble {object_group_id} info -----\n\n")
             file.write(f"Object Group ID: {object_group_id}\n\n")
             file.write("--- Simulation info ---\n")
-            file.write(f"Simulation time step: {sim_t:.3f} s\n")
-            file.write(f"Simulation duration: {sim_t*len(P):.1f} s\n")
+            file.write(f"Max duration of simulation: {sim_t:.3f} s\n")
+            file.write(f"Simulation duration: {frame_t*len(P):.1f} s\n")
             file.write(f"Time between frames: {frame_t:.1f} s\n")
             file.write(f"Number of frames: {len(P)}\n\n")
 
@@ -455,7 +516,6 @@ def main(output_directory: str, object_id: str):
             file.write(
                 f"Sun orientation [x, y, z] (unit vector): {np.array2string(sun_orientation, separator=', ', precision=6)}\n"
             )
-            file.write(f"Sun energy: {sun_energy} W/m^2\n")
             file.write("--- Object {object_group_id} info ---\n\n")
             file.write(
                 f"Initial position [x, y, z] (m): [{P0[0]:.1f}, {P0[1]:.1f}, {P0[2]:.1f}]\n"
@@ -471,8 +531,16 @@ def main(output_directory: str, object_id: str):
             )
             file.write(f"Min/Max distance: [{min_distance}, {max_distance}]\n")
 
+            # Open the file for writing sun energy values
+            sun_energy_path = f"{output_path}/sun_energy.txt"
+            with open(sun_energy_path, 'w') as sun_energy_file:
+                for frame_number, (pos, quat) in enumerate(zip(P, Q)):
+                    sun_energy = get_random_light_energy()
+                    # Write the frame number and corresponding sun energy to the file
+                    sun_energy_file.write(f"{frame_number:05d},{sun_energy}\n")
     # Write camera information to file
     save_camera_info_to_file(output_path)
+    mr.show_motion(P,object_name, output_directory, tumble_id)
 
     # Write scene_gt_info
     write_scene_gt_info(
@@ -486,8 +554,6 @@ def main(output_directory: str, object_id: str):
         V0=v0,
         W0=w0,
     )
-
-    mr.show_motion(P, object_name, os.path.dirname(os.path.dirname(__file__)), tumble_id)
 
 
 if __name__ == "__main__":

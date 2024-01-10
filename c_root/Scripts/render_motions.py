@@ -9,6 +9,10 @@ import argparse
 
 import bpy
 import sys
+import site
+user_site_packages = site.getusersitepackages()
+print (user_site_packages)
+sys.path.append(user_site_packages)
 import os
 from tqdm import tqdm
 parent_dir = (os.path.dirname(os.path.abspath(__file__)))
@@ -97,9 +101,13 @@ def main() -> None:
         log_render(f"camera_dir={dc.camera_direction}")
         log_render(f"light_pos={dc.light_position}")
         log_render(f"light_default_direction={dc.light_default_direction}")
-        log_render(f"light_energy={dc.light_energy}")
+        #log_render(f"light_energy={dc.light_energy}")
         log_render(f"nb_im={nb_im}")
         
+        sun_energy_path = os.path.join(input_directory, motion,"sun_energy.txt")
+        with open(sun_energy_path, 'r') as file:
+            sun_energies = [float(line.strip().split(',')[1]) for line in file.readlines()]
+            print(sun_energies)
         print(f"-------->{motions_path}")
         nb_frames = apply_blender_animation(motions_path=motions_path, 
                                 sun_path=sun_path,
@@ -112,7 +120,7 @@ def main() -> None:
                                 cam_rot=dc.camera_direction,
                                 light_pos=dc.light_position,
                                 light_rot=dc.light_default_direction,
-                                light_energy=dc.light_energy,
+                                sun_energies = sun_energies,
                                 nb_im=nb_im)
         passIndex_correction(bpy.context.scene.objects[main_obj_name])
         
@@ -121,7 +129,7 @@ def main() -> None:
         if dc.mask_node_name not in nodes:
             raise KeyError("No mask node found in the compositing tree")
         # set nb of samples
-        bpy.context.scene.cycles.samples = 2048
+        bpy.context.scene.cycles.samples = 16
         print(f"-------->{bpy.context.scene.objects}")
         mask_node = nodes[dc.mask_node_name]
      

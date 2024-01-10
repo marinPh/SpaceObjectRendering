@@ -8,6 +8,10 @@ print("looking for modules")
 import argparse
 import sys
 import bpy
+import site
+user_site_packages = site.getusersitepackages()
+print (user_site_packages)
+sys.path.append(user_site_packages)
 import numpy as np
 import os
 from mathutils import Vector
@@ -16,6 +20,7 @@ import pymeshlab
 #import plotly.graph_objs as gFo
 #import plotly.offline as pyo
 from tqdm import tqdm
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))    
 from Utils import save_info_to_files_utils as utils
 

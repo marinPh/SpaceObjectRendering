@@ -1,7 +1,7 @@
 SCRIPTS_DIR="./scripts"
 OBJECT_DIR="./objects/blend"
 
- OBJECT_NAMES=( "9_cassini_huygens" "02_Hubble_Space_Telescope" "0_test_sphere" "10_cluster" "11_bepi_mpo" "12_bepi_m" "13_cassini_huygens" "14_double_star" "15_edm" "16_euclid" "17_exoMars" "18_gaia" "19_giotto" "20_herschel" "21_huygens" "22_SM_Integral" "23_iso" "24_juice_v8" "5_MTM" "67_p" "6_CHEOPS_LP" "7_SM_MMO" "8_xmm_newton")  # Default object names
+OBJECT_NAMES=( "27_philae" "22_SM_Integral" "6_CHEOPS" "12_bepi_m" "67_p" "28_plank" "23_iso" "36_soho" "7_SM_MMO" "17_exoMars" " 9_cassini_huygens" "8_xmm_newton" "14_double_star" "39_trace_gas_orbiter" "30_proba_3" "26_SM_MarsExpress" "32_rosetta_philae" "15_edm" "0_test_sphere" "19_giotto" "13_cassini_huygens" "9_cassini_huygens" "25_lisa_pathfinder" "24_juice_v8" "31_proba_3_ocs" "16_euclid" "35_smart_1" "11_bepi_mpo" "02_Hubble_Space_Telescope" "6_CHEOPS_LP" "42_xmm_newton" "38_tgo_edm" "40_ulysses" "34_rosetta_sc" "37_solar_orbiter" "33_schiaparelli" "18_gaia" "41_venus_express" "21_huygens" "29_SM_Proba_2" "5_MTM" "10_cluster" "20_herschel")  # Default object names
 
 
 echo "OBJECT_NAMES: ${OBJECT_NAMES[@]}"
@@ -17,7 +17,6 @@ for OBJECT_NAME in "${OBJECT_NAMES[@]}"; do
   blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/create_motions.py" -- "$OBJECT_NAME" "1"
   blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/create_motions.py" -- "$OBJECT_NAME" "2"
   blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/create_random_poses.py" -- "$OBJECT_NAME" 
-
 done
 
 

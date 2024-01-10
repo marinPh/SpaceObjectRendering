@@ -7,16 +7,22 @@ import re
 def scrap_names():
     parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     sys.path.append(parent_dir)
-    blend_file_path = os.path.join(parent_dir,"c_root", "objects", "blend")
+    blend_file_path = os.path.join(parent_dir, "objects", "blend")
     #look for all files that end with .blend
     pattern = re.compile(r".blend$")
-    # Create list of all blend files withouth the .blend extension
-    blend_files = [f.split(".")[0] for f in os.listdir(blend_file_path) if pattern.search(f)]
+    # Create list of all blend files without .blend extension
+    blend_files = [file[:-6] for file in os.listdir(blend_file_path) if pattern.search(file)]
+    
+    
+    
+    
     # create a string of all blend files in that can be copied into a .sh file
     blend_files_string = "\""
     for file in blend_files:
         blend_files_string += file + "\" \""
     print(blend_files_string+"\"")
     return blend_files
+
+print(scrap_names())
 
 
