@@ -9,3 +9,4 @@ c_root/objects/csv/*
 c_root/objects/blend.zip
 c_root/blender-3.3.14-linux-x64.tar.xz
 c_root/blender-3.4.1-linux-x64.tar.xz
+c_root/output/*

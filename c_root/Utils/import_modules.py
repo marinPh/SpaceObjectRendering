@@ -7,7 +7,7 @@ import site
 user_site_packages = site.getusersitepackages()
 print (user_site_packages)
 sys.path.append(user_site_packages)
-modules = ["scipy","numpy","tqdm","pyquaternion","matplotlib","pandas","open3d","pyquate","syspro","pymeshlab"]
+modules = ["scipy","numpy","opencv-python","tqdm","pyquaternion","matplotlib","pandas","open3d","pyquate","syspro","pymeshlab"]
 python_exe  = sys.executable
 
 print(f"-----{python_exe}-----")

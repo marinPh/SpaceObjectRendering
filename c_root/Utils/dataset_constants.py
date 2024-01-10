@@ -28,11 +28,7 @@ camera_direction : np.ndarray = np.array([0, 1, 0, 0])
 # Camera field of view [degrees]
 camera_fov : int = 40
 
-# Minimum distance from camera to an object [m]
-min_distance : float = 20
 
-# Maximum distance from camera to an object [m]
-max_distance : float = 300
 
 ################################################
 # Lighting info
@@ -41,8 +37,10 @@ max_distance : float = 300
 light_name : str = "Light"
 
 # Light energy [W/m^2]
-light_energy  = 100
-possible_light_energies = [10,100,1000]
+light_energy  = 1000
+possible_light_energies = light_energy*np.array([0.0100, 0.0117, 0.0137, 0.0161, 0.0189, 0.0221, 0.0259, 0.0304, 0.0356, 0.0418, 0.0489, 0.0574, 0.0672, 0.0788, 0.0924, 0.1083, 0.1269, 0.1487, 0.1743, 0.2043, 0.2395, 0.2807, 0.3290, 0.3857, 0.4520, 0.5298, 0.6210, 0.7279, 0.8532, 1.0000])
+
+
 
 # Light position [x, y, z] only for visualization purposes (sun is infinitely far away)
 light_position : np.ndarray = np.array([0, 0, 0])

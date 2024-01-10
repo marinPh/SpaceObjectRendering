@@ -172,7 +172,7 @@ def create_object_motion(
     )  # Insert a zero at the beginning of the rotation vector (for quaternion multiplication)
 
     # Create tumble motion
-    all_positions, orientations, _, T = f15_tumble_integrator(
+    all_positions, orientations, _, T = tumble_integrator(
         p0, q0, v0, w0, dt, sim_t, frame_t, I
     )
 
@@ -358,7 +358,7 @@ def quatDE(x: Quaternion):
     )
 
 
-def f15_tumble_integrator(
+def tumble_integrator(
     p: np.ndarray,
     q: Quaternion,
     v: np.ndarray,
