@@ -75,13 +75,29 @@ fi
 
 # if pose_id == any other value then render the pose with the given id
 
+if [ "$FLAG" == "-bu" ]; then
+  echo "adding background"
+  if [ "$POSE_ID" == "000" ]; then
+    echo "adding background"
+    blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/BackProcRdm.py" -- "$OBJECT_NAME" "$POSE_ID" "$FLAG"
+    exit 0
+  fi
+  blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/BackProcSeq.py" -- "$OBJECT_NAME" "$POSE_ID" "$FLAG"
+  exit 0
+fi
+
 echo "render setup"
-#blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/render_setup.py" "$OBJECT_NAME" "$POSE_ID"
-#blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/render_motions.py" "$OBJECT_NAME" "$POSE_ID"
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/render_setup.py" "$OBJECT_NAME" "$POSE_ID"
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/render_motions.py" "$OBJECT_NAME" "$POSE_ID"
 
 # if flag == -b then add background to all rendered images
 echo "FLAG: $FLAG"
 if [ "$FLAG" == "-b" ]; then
+  if [ "$POSE_ID" == "000" ]; then
+    echo "adding background"
+    blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/BackProcRdm.py" -- "$OBJECT_NAME" "$POSE_ID" "$FLAG"
+    exit 0
+  fi
   echo "adding background"
   blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/BackProcSeq.py" -- "$OBJECT_NAME" "$POSE_ID" "$FLAG"
 fi
