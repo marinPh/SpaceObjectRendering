@@ -24,7 +24,7 @@ from Utils import save_info_to_files_utils as utils
 from Utils import dataset_constants as dc
 
 
-num_poses =2
+num_poses =100
 sun_rnd_generated : bool = True
 
 ################################################

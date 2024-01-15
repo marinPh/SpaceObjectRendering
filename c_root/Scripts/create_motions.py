@@ -250,18 +250,17 @@ def line_plane_intersection(point, direction, plane_normal, plane_point):
     plane_normal = np.array(plane_normal)
     plane_point = np.array(plane_point)
 
-    # Calculate the dot product of the direction vector and the plane normal
+    # Calculates the dot product of the direction vector and the plane normal
     dot_product = np.dot(direction, plane_normal)
 
-    # Check if the line is parallel to the plane
+    # Checks if the line is parallel to the plane
     if abs(dot_product) < 1e-6:
         return None  # No intersection, the line is parallel to the plane
 
-    # Calculate the parameter t for the line-plane intersection
+    # Calculates the parameter t for the line-plane intersection
     t = np.dot(plane_point - point, plane_normal) / dot_product
 
-    # Calculate the intersection point
-    intersection_point = point + t * direction
+    
 
     return t
 def generate_optimal_initial_conditions(max_dist, min_dist, fov):

@@ -1,0 +1,19 @@
+----- Tumble 23 info -----
+
+Object Group ID: 23
+
+--- Simulation info ---
+Max duration of simulation: 40.000 s
+Simulation duration: 10.0 s
+Time between frames: 0.1 s
+Number of frames: 100
+
+--- Lighting info ---
+Sun orientation [x, y, z] (unit vector): [ 0.717699,  0.560813, -0.412791]
+--- Object {object_group_id} info ---
+
+Initial position [x, y, z] (m): [8.8, -5.5, 35.8]
+Initial attitude quaternion [qw, qx, qy, qz]: [-0.0, -0.3, 0.5, -0.8]
+Initial velocity vector [x, y, z] (m/s): [-0.1, -0.4, -1.1]
+Initial angular velocity vector [x, y, z] (rad/s): [0.856506, 0.728813, -0.370170]
+Min/Max distance: [8.971429600325827, 89.71429600325827]

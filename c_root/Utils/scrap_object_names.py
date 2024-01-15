@@ -17,11 +17,12 @@ def scrap_names():
     
     
     # create a string of all blend files in that can be copied into a .sh file
-    blend_files_string = "\""
+    blend_files_string = ""
     for file in blend_files:
-        blend_files_string += file + "\" \""
-    print(blend_files_string+"\"")
-    return blend_files
+        blend_files_string += file +" "
+   
+
+    return blend_files_string
 
 print(scrap_names())
 

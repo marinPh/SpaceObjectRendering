@@ -1,0 +1,19 @@
+----- Tumble 18 info -----
+
+Object Group ID: 18
+
+--- Simulation info ---
+Max duration of simulation: 40.000 s
+Simulation duration: 10.0 s
+Time between frames: 0.1 s
+Number of frames: 100
+
+--- Lighting info ---
+Sun orientation [x, y, z] (unit vector): [ 0.564941, -0.700868,  0.435461]
+--- Object {object_group_id} info ---
+
+Initial position [x, y, z] (m): [-0.6, 0.6, 2.3]
+Initial attitude quaternion [qw, qx, qy, qz]: [0.1, 0.9, -0.1, 0.4]
+Initial velocity vector [x, y, z] (m/s): [0.1, -0.1, -0.1]
+Initial angular velocity vector [x, y, z] (rad/s): [-0.430577, 0.682439, 0.543919]
+Min/Max distance: [0.43410143227383036, 4.341014322738303]
