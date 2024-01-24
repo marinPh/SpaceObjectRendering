@@ -31,6 +31,23 @@ echo "OBJECT_NAME: $OBJECT_NAME"
 echo "POSE_ID: $POSE_ID"
 echo "FLAG: $FLAG"
 
+if [ "$FLAG" == "-bu" ]; then
+  echo "adding background"
+  if [ "$POSE_ID" == "000" ]; then
+    echo "adding background"
+    blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/BackProcRdm.py" -- "$OBJECT_NAME" "$POSE_ID" "$FLAG"
+    exit 0
+  fi
+  echo "adding background here"
+  blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/BackProcSeq.py" -- "$OBJECT_NAME" "$POSE_ID" "$FLAG"
+  exit 0
+fi
+
+echo "render setup"
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/render_setup.py" "$OBJECT_NAME" "$POSE_ID"
+blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/render_motions.py" "$OBJECT_NAME" "$POSE_ID"
+
+
 #if -a or --all then render all poses, find all the find all the poses in the poses folder and render them
 if [ "$OBJECT_NAME" == "-a" ] || [ "$OBJECT_NAME" == "--all" ]; then
   echo "rendering all poses"
@@ -73,22 +90,6 @@ if [ "$OBJECT_NAME" == "-a" ] || [ "$OBJECT_NAME" == "--all" ]; then
   exit 0
 fi
 
-# if pose_id == any other value then render the pose with the given id
-
-if [ "$FLAG" == "-bu" ]; then
-  echo "adding background"
-  if [ "$POSE_ID" == "000" ]; then
-    echo "adding background"
-    blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/BackProcRdm.py" -- "$OBJECT_NAME" "$POSE_ID" "$FLAG"
-    exit 0
-  fi
-  blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/BackProcSeq.py" -- "$OBJECT_NAME" "$POSE_ID" "$FLAG"
-  exit 0
-fi
-
-echo "render setup"
-blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/render_setup.py" "$OBJECT_NAME" "$POSE_ID"
-blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/render_motions.py" "$OBJECT_NAME" "$POSE_ID"
 
 # if flag == -b then add background to all rendered images
 echo "FLAG: $FLAG"
@@ -101,3 +102,6 @@ if [ "$FLAG" == "-b" ]; then
   echo "adding background"
   blender "$OBJECT_DIR/$OBJECT_NAME.blend" -b -P "$SCRIPTS_DIR/BackProcSeq.py" -- "$OBJECT_NAME" "$POSE_ID" "$FLAG"
 fi
+
+# if pose_id == any other value then render the pose with the given id
+

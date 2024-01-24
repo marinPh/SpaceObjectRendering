@@ -5,10 +5,18 @@ Description: This script adds background and noise to the random orientation ima
 """
 
 # import
+
+import sys
+import site
+user_site_packages = site.getusersitepackages()
+print (user_site_packages)
+sys.path.append(user_site_packages)
 import cv2 as cv
+
 import numpy as np
 import math
 import os
+
 from tqdm import tqdm
 
 ## Global variables
@@ -17,42 +25,37 @@ r_p = 0.05
 sp_p = 0.05
 s_p = 0.05
 
-# Paths
-rgb_dir: str = '/Users/yassinechami/BachProj/04/04000/rgb'
-back_dir: str = '/Users/yassinechami/BachProj/Earth/04000/back'
-backimg_dir: str = '/Users/yassinechami/BachProj/Earth/earthimg_02'
-noise_dir: str = '/Users/yassinechami/BachProj/Earth/04000/noise'
-mask_dir: str = '/Users/yassinechami/BachProj/04/04000/mask'
+#command line arguments find index of "--"
 
-start: int = 0
-end: int = 38
+index = sys.argv.index("--")
+object_id = sys.argv[index+1].split("_")[0]
+motion_id = sys.argv[index+2]
+flag = sys.argv[index+3]
+
+
+
+# Paths
+rgb_dir: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "output", f"{object_id}_{motion_id}")
+back_dir: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "output", f"{object_id}_{motion_id}","back")
+backimg_dir: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "input", "backimg")
+noise_dir: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "output", f"{object_id}_{motion_id}","noise")
+mask_dir: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "output", f"{object_id}_{motion_id}","mask")
+earth_img: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "input", "earthImg")
 
 
 def main():
-    read_and_add_background(start, end)
+    #if back_dir does not exist, create it
+    if not os.path.exists(back_dir):
+        os.makedirs(back_dir)
+
+    addBackground()
     print('Background added')
-    addNoise()
-    print('Noise added')
+    
 
 
 ########################################################################################################################
 # Background functions
-def read_and_add_background(start: int, end: int):
-    bg_tab = read_numbers_from_file(start, end)
-    arr = np.arange(39)
 
-    # Shuffle the array randomly
-    np.random.shuffle(arr)
-    rgb_tab = arr[:len(bg_tab)]
-
-    # sort rgb_tab
-    rgb_tab = np.sort(rgb_tab)
-
-    # Txt file with the numbers
-    write_numbers_to_file(rgb_tab, bg_tab)
-
-    # Add the background to the images
-    addBackground(bg_tab, rgb_tab)
 
 def write_numbers_to_file(rgb_tab, bg_tab):
     with open('back.txt', 'w') as file:
@@ -147,30 +150,41 @@ def crop_and_rot():
 
 
 # Method that add the background from rotated images to the rendered images using the mask
-def addBackground(bg_tab, rgb_tab):
-    if len(bg_tab) != len(rgb_tab):
-        print('The two arrays must have the same length')
-        return
-    for i in tqdm(range(len(bg_tab))):
-        # Read the image
-        imgName: str = f'{rgb_tab[i]:04d}.png'
-        imgPath: str = os.path.join(rgb_dir, imgName)
+def addBackground():
+     
+    rgb_list = os.listdir(rgb_dir)
+    #keep only the files that start with rgb and are not directories
+    rgb_tab = [x for x in rgb_list if not os.path.isdir(os.path.join(rgb_dir, x)) and x.startswith("rgb")]
+    #look for a random image in back background images
+    back_list = os.listdir(backimg_dir)
+    print (f"back_list: {back_list}")
+    print (f"rgb_tab: {rgb_tab}")
+    for i in tqdm(range(len(rgb_tab))):
+        #choose a random directory
+        back_path = os.path.join(backimg_dir, back_list[np.random.randint(0, len(back_list))])
+        random_back = os.listdir(back_path)
+        back_path = os.path.join(back_path, random_back[np.random.randint(0, len(random_back))])
+        back = np.array(cv.imread(back_path))
+        #read the mask
+        mask_path = os.path.join(mask_dir, rgb_tab[i][3:])
+    
+        mask = np.array(cv.imread(mask_path))
+        #read the rendered image
+        rgb_path = os.path.join(rgb_dir, rgb_tab[i])
+        rgb = np.array(cv.imread(rgb_path))
+        #add the background to the rendered image
+        #invert the mask
+        
+        mask = np.bitwise_not(mask)
+        rgb[mask != 0] = back[mask != 0]
+        #save the image
+        cv.imwrite(os.path.join(back_dir, rgb_tab[i]), rgb)
 
-        img: np.ndarray = np.array(cv.imread(imgPath))
-        # Read the mask
-        maskPath_2 = os.path.join(mask_dir, imgName)
-        mask = np.array(cv.imread(maskPath_2))
+   
 
-        # Get the background
-        backgroundPath: str = os.path.join(backimg_dir, f'{bg_tab[i]:04d}.png')
-        background: np.ndarray = np.array(cv.imread(backgroundPath))
 
-        # Add the background to the image
-        img[mask != 0] = background[mask != 0]
-        # Save the image
-        curr_output_dir: str = os.path.join(back_dir, imgName)
-        cv.imwrite(curr_output_dir, img)
-
+    
+    
 
 ########################################################################################################################
 # Noise functions

@@ -160,7 +160,7 @@ def main() -> None:
 
         
         # Register the handlers
-        bpy.app.handlers.render_post.append(update_progress_bar)
+       
         #I want to see the object position in the scene
         
         
@@ -169,12 +169,12 @@ def main() -> None:
         
 
         # Render the animation
-   
-        bpy.ops.render.render( animation=True)
+        #rendering without exiting blender
+        bpy.ops.render.render( animation=True, write_still=False)
+        bpy.ops.render.view_show()
 
         # Remove the handler when rendering is finished
-        bpy.app.handlers.render_post.remove(update_progress_bar)
-        pbar.close()
+        
 
         add_rendered_motion_to_log(output_directory, motion, dc.progress_log_file_name)
         

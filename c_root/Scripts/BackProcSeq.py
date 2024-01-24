@@ -57,10 +57,11 @@ if not os.path.exists(earth_img):
 # is backimg_dir empty?
 crop: bool  = os.listdir(backimg_dir) == []
 # Do you want to add background to the images or just noise?
-with_background: bool =  noise_or_background == "-b" 
+with_background: bool =  noise_or_background == "-b" or noise_or_background == "-bu"   
 
 
 def main():
+    print ('into main')
     if with_background:
         background(crop)
         print('Background added')
@@ -122,17 +123,81 @@ def cropImage_seq(output_directory: str, img: np.ndarray, gnr_image_size: tuple[
         cv.imwrite(curr_output_directory, cropped)
 
 
-def addBackground_seq(rgb_path, mask_path, seq_path, output_directory):
-    rgbList: list[str] = os.listdir(rgb_path)
-     # keep only the files starting with rgb and no folders
-    print(f"rgb_path: {rgb_path}")
-    print(f"rgbList: {rgbList}")
-    rgbList = [x for x in rgbList if x.startswith("rgb") and not os.path.isdir(os.path.join(rgb_path, x))]
-    print(f"rgbList: {rgbList}")
+def addBackground_seq(rgb_path, mask_path, back_dir, output_directory):
+    print (f"rgb_path: {rgb_path}")
+    print (f"mask_path: {mask_path}")
+    print (f"back_dir: {back_dir}")
+    print (f"output_directory: {output_directory}")
 
+    rgbList: list[str] = os.listdir(rgb_path)
+    rgbList = [x for x in rgbList if x.startswith("rgb") and not os.path.isdir(os.path.join(rgb_path, x))]
+
+
+    #list the directories in back_dir that have at least len(rgbList) files
+    backimgList: list[str] = os.listdir(back_dir)   
+    backimgList = [x for x in backimgList if os.path.isdir(os.path.join(back_dir, x)) and len(os.listdir(os.path.join(back_dir, x))) >= len(rgbList)]
+
+    
+    #choose a random directory from backimgList 
+    backimg_dir_2: str = os.path.join(backimg_dir, backimgList[np.random.randint(0, len(backimgList))])
+    print(f"backimg_dir_2: {backimg_dir_2}")
+     # keep only the files starting with rgb and no folders
+    
+    nb_back = len(os.listdir(backimg_dir_2))
+    print (f"nb_back: {nb_back}")
+    print (f"len(rgbList): {len(rgbList)}")
+    if nb_back == len(rgbList):
+        starting_index = 0
+    else:
+        starting_index = np.random.randint(0, nb_back - len(rgbList))
+    print (f"starting_index: {starting_index}")
+    #create 3 arrays of shape (len(rgbList), 1024, 1024, 3)
+    rgb_list = []
+    mask_list = []
+    back_list = []
+#tqdm is used to show a progress bar
+    for i in tqdm(range(len(rgbList))):
+        #each iteration append the rgb, mask and back image to the corresponding list
+        rgb_list.append(cv.imread(os.path.join(rgb_path, rgbList[i])))
+        mask_list.append(cv.imread(os.path.join(mask_path, rgbList[i][3:])))
+        back_list.append(cv.imread(os.path.join(backimg_dir_2, f"{starting_index+i:04d}.png")))
+    #create the numpy arrays of shape (len(rgbList), 1024, 1024, 3)
+    rgb_array = np.array(rgb_list)
+    mask_array = np.array(mask_list)
+    back_array = np.array(back_list)
+    print (f"rgb_array.shape: {rgb_array.shape}")
+    print (f"mask_array.shape: {mask_array.shape}")
+    print (f"back_array.shape: {back_array.shape}")
+    assert rgb_array.shape == (len(rgbList), 1024, 1024, 3)
+    assert mask_array.shape == (len(rgbList), 1024, 1024, 3)
+    assert back_array.shape == (len(rgbList), 1024, 1024, 3)
+
+    #invert the mask
+    
+    #add the background to the image
+    #invert the mask
+    print (f"invert the mask")
+    mask_array = cv.bitwise_not(mask_array)
+    #add the background to the image
+    print (f"add the background to the image")
+    rgb_array[mask_array != 0] = back_array[mask_array != 0]
+
+    #save the images
+    for i in tqdm(range(len(rgbList))):
+        output_path: str = os.path.join(output_directory, f"mask{rgbList[i][3:]}")
+
+        cv.imwrite(output_path, rgb_array[i])
+
+
+
+        
+
+
+    """
     for imgName in tqdm(rgbList):
         img_path: str = os.path.join(rgb_path, imgName)
         img: np.ndarray = np.array(cv.imread(img_path))
+       
 
         # Read the mask
         #name of the mask is the same as the rgb image withouth the rgb
@@ -142,8 +207,10 @@ def addBackground_seq(rgb_path, mask_path, seq_path, output_directory):
      
 
         # Get the background
-        bg_path: str = os.path.join(seq_path, imgName)
+        bg_path: str = os.path.join(backimg_dir_2, f"{starting_index:04d}.png")
+      
         bg: np.ndarray = np.array(cv.imread(bg_path))
+        starting_index += 1
 
         # Add the background to the image
         #invert the mask
@@ -152,7 +219,7 @@ def addBackground_seq(rgb_path, mask_path, seq_path, output_directory):
 
         # Save the image
         output_path: str = os.path.join(output_directory, imgName)
-        cv.imwrite(output_path, img)
+        cv.imwrite(output_path, img)"""
 
 
 ########################################################################################################################

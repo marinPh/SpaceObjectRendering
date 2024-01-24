@@ -2,8 +2,98 @@
 
 init file:
 apply_all_trans
-<bpy_struct, Object("11_bepi_mpo") at 0x7f63995db008>
+<bpy_struct, Object("6_CHEOPS_LP") at 0x7f34dfa91808>
 apply_all_trans
-<bpy_struct, Object("bepi_mpo_2020") at 0x7f63995db608>
+<bpy_struct, Object("CHEOPS_LowPoly group4 pCylinder39 polySurface12") at 0x7f34dfa92408>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCube11") at 0x7f34dfa92a08>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCube18") at 0x7f34dfb79008>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCube19") at 0x7f34dfb79608>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCube31") at 0x7f34dfb79c08>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCube32 polySurface22") at 0x7f34dfb7a208>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCube34") at 0x7f34dfb7a808>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder14") at 0x7f34dfb7ae08>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder19") at 0x7f34dfb7b408>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder26") at 0x7f34dfb7ba08>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder33") at 0x7f34dfb7c008>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder35") at 0x7f34dfb7c608>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder40") at 0x7f34dfb7cc08>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder42") at 0x7f34dfb7d208>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder43") at 0x7f34dfb7d808>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder44") at 0x7f34dfb7de08>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder45") at 0x7f34dfb7e408>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder6") at 0x7f34dfb7ea08>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder7") at 0x7f34dfb80008>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder8") at 0x7f34dfb80608>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly pCylinder9") at 0x7f34dfb80c08>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly polySurface11 group4 pCylinder39") at 0x7f34dfb81208>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly polySurface14 polySurface18") at 0x7f34dfb81808>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly polySurface15 polySurface16") at 0x7f34dfb81e08>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly polySurface15 polySurface17") at 0x7f34dfb82408>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly polySurface19 polySurface15") at 0x7f34dfb82a08>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly polySurface20 polySurface14") at 0x7f34dfb83008>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly polySurface21 pCube32") at 0x7f34dfb83608>
+apply_all_trans
+<bpy_struct, Object("CHEOPS_LowPoly polySurface3") at 0x7f34dfb83c08>
+apply_all_trans
+<bpy_struct, Object("pCylinder1 CHEOPS_LowPoly") at 0x7f34dfb84808>
+apply_all_trans
+<bpy_struct, Object("textureEditorIsolateSelectSet CHEOPS_LowPoly pCube32 po_f350060") at 0x7f34dfb84e08>
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
+traverse
 traverse
 traverse

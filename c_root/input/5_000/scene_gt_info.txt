@@ -5,7 +5,7 @@ Object Group ID: 5
 --- Pose generation info ---
 Min distance (from camera): 32.78711336764239 meters
 Max distance (from camera): 327.87113367642394 meters
-Number of poses: 2
+Number of poses: 100
 Number of generated layers: 300
 
 --- Lighting info ---
