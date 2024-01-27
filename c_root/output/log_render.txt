@@ -626,3 +626,15 @@ camera_dir=[0 1 0 0]
 light_pos=[0 0 0]
 light_default_direction=[0 0 1]
 nb_im=None
+no sunpath
+sun_path=None
+info_path=/mnt/c/Users/marin/Documents/Ba5/renderCommand/c_root/./input/5_2/scene_gt_info.txt
+num_cols=8
+object_name={'01': '01_James_Webb_Space_Telescope', '02': '02_Hubble_Space_Telescope', '03': '03_CosmosLink', '04': '04_Rocket_Body', '5': '5_MTM'}
+camera_name=Camera
+light_name=Light
+camera_pos=[0 0 0]
+camera_dir=[0 1 0 0]
+light_pos=[0 0 0]
+light_default_direction=[0 0 1]
+nb_im=None
