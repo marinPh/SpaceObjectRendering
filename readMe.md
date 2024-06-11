@@ -1,4 +1,4 @@
-# Rendering Objects in an Orbit our Earth
+# Rendering Objects in an Orbit Around Earth
 
 ## Introduction
 
