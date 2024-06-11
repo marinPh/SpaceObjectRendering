@@ -29,3 +29,7 @@ We use the parameters and definition of our poses to create sequent images (or r
 ## State of project
 
 Project is finished but after taking a look recently some modifictions would be needed to be used by OutOfLab users so I will implement the settings extractor as the oringinal blender is too big for git.
+
+## Examples and Report 
+
+You can find examples images in ./examples and example htmls of objects used in ./objects/html/ and to find the htmls of trajectories ./input/objectID_poseID (000 is random so no trajectories) and their will be my report as a PDF if you are interested.
